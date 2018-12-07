@@ -115,12 +115,16 @@ componentDidMount = () => {
         '<div id="bodyContent">'+
         '<p><b>`${singleLocal.adress}`</b></p>'+
         '</div></div>';
-      //https://stackoverflow.com/questions/1875596/have-just-one-infowindow-open-in-google-maps-api-v3
-       let infowindow = new window.google.maps.InfoWindow({
+      
+      
+      let infowindow = new window.google.maps.InfoWindow({
       content: contentString
       })
 
+        //https://stackoverflow.com/questions/1875596/have-just-one-infowindow-open-in-google-maps-api-v3
+        //https://stackoverflow.com/questions/24951991/open-only-one-infowindow-at-a-time-google-maps 
       //Open infowindow 
+      //TODO: Multiple Indowindows open
      marker.addListener('click', function() {
             infowindow.setContent (contentString);
             infowindow.open(map, marker)
