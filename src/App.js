@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 
 import Header from './Header';
-//import SidebarContainer from './SidebarContainer';
+import SidebarContainer from './SidebarContainer';
 
 class App extends Component {
 
@@ -113,7 +113,7 @@ componentDidMount = () => {
         map: map,
         title: singleLocal.name
       })
-      this.state.listedMarkers.push(marker);
+      //this.state.listedMarkers.push(marker);
       
    
        //Create infowindow 
@@ -168,12 +168,6 @@ componentDidMount = () => {
           test = true;
            
       })
-      
-
-     
-
-    
-  
 
     })
 }
@@ -183,6 +177,7 @@ componentDidMount = () => {
     return (
       <div>
         <Header />
+        <SidebarContainer />
         <div id='map'></div>
       </div>
     )
