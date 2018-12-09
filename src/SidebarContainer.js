@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import escapeRegExp from 'escape-string-regexp';
 
+import sidebarContainer from './SidebarContainer.css';
+
 class SidebarContainer extends Component {
     constructor(props) {
     super(props);
@@ -21,7 +23,7 @@ class SidebarContainer extends Component {
 
     if (query) {
         let showingListOfLocals;
-        const match = new RegExp(escapeRegExp(query), 'i');
+        const match = new RegExp((query), 'i');
 
         showingListOfLocals = this.props.locals.filter(local => 
             match.test(local.name));
