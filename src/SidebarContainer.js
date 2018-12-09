@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import escapeRegExp from 'escape-string-regexp';
 
-import sidebarContainer from './SidebarContainer.css';
+import './SidebarContainer.css';
 
 class SidebarContainer extends Component {
     constructor(props) {
