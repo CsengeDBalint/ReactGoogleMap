@@ -1,18 +1,17 @@
 .sidebarContainer {
-   background:transparent;
 
-   box-shadow: 1px 1px 2px 1px rgba(128, 128, 128, 0.2);
-   padding: 2em 2em;
-   color: #444444;
-   background-color: #ffffff;
-   width: 375px;
-   max-width:100%;
-}
-
-.sidebarContainer li{
-    display: block;
-    cursor: pointer;
-    padding: 1em;
     box-shadow: 1px 1px 2px 1px rgba(128, 128, 128, 0.2);
-    background-color: white;
-  }
+    padding: 2em 2em;
+    color: #444444;
+    background-color: #ffffff;
+    width: 375px;
+    max-width:100%;
+ }
+ 
+ .Sidebar-list li{
+     display: block;
+     cursor: pointer;
+     padding: 1em;
+     box-shadow: 1px 1px 2px 1px rgba(128, 128, 128, 0.2);
+     background-color: white;
+   }

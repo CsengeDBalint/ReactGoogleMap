@@ -171,7 +171,6 @@ componentDidMount = () => {
 
     })
 }
-     
 
   render() {
     return (
