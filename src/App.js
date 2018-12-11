@@ -9,7 +9,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      listedMarkers: [],
+      listOfMarkers: [],
       infoWindowOpened : false,
       locals: [
         {
@@ -113,8 +113,9 @@ componentDidMount = () => {
         map: map,
         title: singleLocal.name
       })
-      //this.state.listedMarkers.push(marker);
-      
+     
+      //Push marker in the array that holds markers showing up on our map
+      this.state.listOfMarkers.push(marker);
    
        //Create infowindow 
        /*let contentString = '<div className="contentInfoWindow">'+
@@ -153,7 +154,7 @@ componentDidMount = () => {
         //https://stackoverflow.com/questions/1875596/have-just-one-infowindow-open-in-google-maps-api-v3
         //https://stackoverflow.com/questions/24951991/open-only-one-infowindow-at-a-time-google-maps 
       //Open infowindow 
-      //TODO: Multiple Indowindows open
+      //TODO:only one infowindow can be opened at a time
       
       marker.addListener('click', function() {
      
@@ -166,17 +167,23 @@ componentDidMount = () => {
           infowindow.setContent ('singleLocal.adress');
           infowindow.open(map, marker);
           test = true;
-           
+        
+        //Update markers on the map according search bar input
+        //https://developers.google.com/maps/documentation/javascript/examples/marker-remove 
+        let filterMarkers  = () => {(this.state.listOfMarkers.setMapOnAll(map))}
+
       })
 
     })
-}
-
+  }
+  
   render() {
     return (
       <div>
         <Header />
-        <SidebarContainer />
+        <SidebarContainer   locals ={this.state.locals}
+                            updateMarkers={this.filterMarkers}
+                            />
         <div id='map'></div>
       </div>
     )
