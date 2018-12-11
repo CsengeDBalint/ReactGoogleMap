@@ -107,7 +107,7 @@ componentDidMount = () => {
 
       //Show up the markers
      
-     this.state.locals.map(singleLocal =>{  
+     this.state.locals.forEach(singleLocal =>{  
         var marker = new window.google.maps.Marker({
         position: singleLocal.position,
         map: map,
