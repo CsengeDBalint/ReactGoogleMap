@@ -9,7 +9,7 @@ class SidebarContainer extends Component {
         query:''
     };
 
-    udpateQuery = (query) => {
+    updateQuery = (query) => {
         this.setState({query: query.trim()})
     }
 
@@ -39,7 +39,7 @@ class SidebarContainer extends Component {
                         className="input-field" 
                         type="text" 
                         value={this.state.query} 
-                        onChange={event => this.udpateQuery(event.target.value) && this.props.filterMarkers}  
+                        onChange={event => this.updateQuery(event.target.value) && this.props.filterMarkers}  
                         placeholder="Search for café..." 
                     />
                     <button
