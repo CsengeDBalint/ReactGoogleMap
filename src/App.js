@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import './App.css';
+import escapeRegExp from 'escape-string-regexp';
 
 import Header from './Header';
 import SidebarContainer from './SidebarContainer';
 
 class App extends Component {
 
-  constructor(props) {
+    constructor(props) {
     super(props);
     this.state = {
-      listOfMarkers: [],
+        allMarkers: [],
+        shownMarker: [],
+        filteredMarkers: [],
       infoWindowOpened : false,
       locals: [
         {
@@ -83,17 +86,18 @@ class App extends Component {
             postalcode: "1010 Vienna"
         }
     ]
-  };
-}
+        };
+    }
 
-componentDidMount = () => {
+    componentDidMount = () => {
     
     // Connect initMap() to the global window
     window.initMap = this.initMap;
     
     // Asynchronously load the Google Maps script, passing in the callback reference
     loadJS('https://maps.googleapis.com/maps/api/js?key=AIzaSyCLVCGUR9jUVe3DkVKspecXg0pCgMK1E1M&callback=initMap')
-  }
+    }
+
    //Initialize and add the map
    initMap = () => {
 
@@ -105,24 +109,25 @@ componentDidMount = () => {
           center: {lat: 48.208418, lng: 16.373231}
         });
 
-      //Show up the markers
-     
-     this.state.locals.forEach(singleLocal =>{  
-        var marker = new window.google.maps.Marker({
-        position: singleLocal.position,
-        map: map,
-        title: singleLocal.name
-      })
-     
-      //Push marker in the array that holds markers showing up on our map
-      this.state.listOfMarkers.push(marker);
-   
-       //Create infowindow 
-       /*let contentString = '<div className="contentInfoWindow">'+
+        //Show up the markers
+        
+        this.state.locals.forEach(singleLocal =>{  
+            var marker = new window.google.maps.Marker({
+            position: singleLocal.position,
+            map: map,
+            title: singleLocal.name
+        })
+        
+        //Push marker in the array that holds markers showing up on our map
+        this.state.allMarkers.push(marker);
+        })
+
+        //Create infowindow 
+        /*let contentString = '<div className="contentInfoWindow">'+
         '<h3 className="firstHeading">`${this.marker.title}`</h3>'+
         '<div id="bodyContent">'+
         '<p><b>`${singleLocal.adress}`</b></p>'+
-        '</div></div>'; */
+        '</div></div>'; 
 
         var contentString = '<div id="content">'+
         '<div id="siteNotice">'+
@@ -144,50 +149,79 @@ componentDidMount = () => {
         '(last visited June 22, 2009).</p>'+
         '</div>'+
         '</div>';
-      
-
-      
-      var infowindow = new window.google.maps.InfoWindow({
-          content: contentString
-      })
+        
+        var infowindow = new window.google.maps.InfoWindow({
+            content: contentString
+        })
 
         //https://stackoverflow.com/questions/1875596/have-just-one-infowindow-open-in-google-maps-api-v3
         //https://stackoverflow.com/questions/24951991/open-only-one-infowindow-at-a-time-google-maps 
-      //Open infowindow 
-      //TODO:only one infowindow can be opened at a time
-      
-      marker.addListener('click', function() {
-     
+        //Open infowindow 
+        //TODO:only one infowindow can be opened at a time
+        
+        marker.addListener('click', function() {
+        
         if (test) {
             infowindow.close();
             console.log('test true infowindow close');
         }
-          
+            
         //if( infowindow ) infowindow.close();    
-          infowindow.setContent ('singleLocal.adress');
-          infowindow.open(map, marker);
-          test = true;
+            infowindow.setContent ('singleLocal.adress');
+            infowindow.open(map, marker);
+            test = true;
+        */
         
+        }
+
         //Update markers on the map according search bar input
-        //https://developers.google.com/maps/documentation/javascript/examples/marker-remove 
-        let filterMarkers  = () => {(this.state.listOfMarkers.setMapOnAll(map))}
+        //https://developers.google.com/maps/documentation/javascript/examples/marker-remove         
+        filterMarkers = (query) => {
 
-      })
+            let { map, allMarkers } = this.state;
+            let filteredMarkers;
 
-    })
-  }
+            // Set all markers on the map by default
+            allMarkers.map((singleMarker) =>{
+            return singleMarker.setMap(map);
+            })
+        
+        
+            // Removes the markers from the map, but keeps them in the array.       
+            if (query) {
+            this.setState({ query: query });
+            const match = new RegExp(escapeRegExp(query), 'i')
+
+            filteredMarkers = this.state.allMarkers.filter((shownMarker) =>
+                match.test(this.state.locals.foursquareId));
+                
+            // Hide markers that are included in filteredMarkers array
+            filteredMarkers.map((filteredMarker) => {
+                return filteredMarker.setMap(null)
+            })    
+            return this.setState({ filteredMarkers: filteredMarkers });    
+            console.log(this.state.filteredMarkers)
+            } else {
+            // If there is no query, show all markers
+            this.setState({ query: '', filteredMarkers: allMarkers});
+
+            allMarkers.map((singleMarker) => {
+                return singleMarker.setMap(map)
+            })
+            }
+        }    
   
-  render() {
-    return (
-      <div>
-        <Header />
-        <SidebarContainer   locals ={this.state.locals}
-                            updateMarkers={this.filterMarkers}
-                            />
-        <div id='map'></div>
-      </div>
-    )
-  }
+    render() {
+        return (
+        <div>
+            <Header />
+            <SidebarContainer   locals ={this.state.locals}
+                                filterMarkers={this.filterMarkers}
+                                />
+            <div id='map'></div>
+        </div>
+        )
+    }
 }
 
 export default App;
