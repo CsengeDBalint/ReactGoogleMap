@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import escapeRegExp from 'escape-string-regexp';
+//import escapeRegExp from 'escape-string-regexp';
 
 import Header from './Header';
 import SidebarContainer from './SidebarContainer';
@@ -11,9 +11,7 @@ class App extends Component {
     super(props);
     this.state = {
         allMarkers: [],
-        shownMarker: [],
-        filteredMarkers: [],
-      infoWindowOpened : false,
+      //infoWindowOpened : false
       locals: [
         {
             foursquareId: "4b058890f964a520afcd22e3",
@@ -87,6 +85,10 @@ class App extends Component {
         }
     ]
         };
+
+        this.initMap = this.initMap.bind(this);
+        //this.filterMarkers = this.filterMarkers.bind(this);
+
     }
 
     componentDidMount = () => {
@@ -101,7 +103,6 @@ class App extends Component {
    //Initialize and add the map
    initMap = () => {
 
-    var test = false;
     // The map, centered at Vienna
     var map = new window.google.maps.Map(
         document.getElementById('map'), 
@@ -172,11 +173,9 @@ class App extends Component {
             test = true;
         */
         
-        }
-
-        //Update markers on the map according search bar input
+         /*/Update markers on the map according search bar input
         //https://developers.google.com/maps/documentation/javascript/examples/marker-remove         
-        filterMarkers = (query) => {
+         let filterMarkers = (query) => {
 
             let { map, allMarkers } = this.state;
             let filteredMarkers;
@@ -189,18 +188,20 @@ class App extends Component {
         
             // Removes the markers from the map, but keeps them in the array.       
             if (query) {
-            this.setState({ query: query });
+            //this.setState({ query: query });
             const match = new RegExp(escapeRegExp(query), 'i')
 
-            filteredMarkers = this.state.allMarkers.filter((shownMarker) =>
-                match.test(this.state.locals.foursquareId));
-                
+            filteredMarkers = allMarkers.filter((local) =>
+                //shownMarker.foursquareId == allMarkers.foursquareId;
+                match.test(local.name)
+                );
+                this.setState({filteredMarkers : filteredMarkers})
             // Hide markers that are included in filteredMarkers array
             filteredMarkers.map((filteredMarker) => {
                 return filteredMarker.setMap(null)
             })    
-            return this.setState({ filteredMarkers: filteredMarkers });    
-            console.log(this.state.filteredMarkers)
+            return this.setState({ filteredMarkers: filteredMarkers })    
+            console.log(this.state.filteredMarkers);
             } else {
             // If there is no query, show all markers
             this.setState({ query: '', filteredMarkers: allMarkers});
@@ -209,14 +210,19 @@ class App extends Component {
                 return singleMarker.setMap(map)
             })
             }
-        }    
-  
+        }
+       */
+    }    
+
+     
+
+
     render() {
         return (
         <div>
             <Header />
             <SidebarContainer   locals ={this.state.locals}
-                                filterMarkers={this.filterMarkers}
+                                //filterMarkers={this.filterMarkers}
                                 />
             <div id='map'></div>
         </div>
