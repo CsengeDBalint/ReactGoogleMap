@@ -10,8 +10,8 @@ class App extends Component {
     constructor(props) {
     super(props);
     this.state = {
-        allMarkers: [],
-      //infoWindowOpened : false
+       // allMarkers: [],
+      infoWindowOpened : false,
       locals: [
         {
             foursquareId: "4b058890f964a520afcd22e3",
@@ -86,7 +86,7 @@ class App extends Component {
     ]
         };
 
-        this.initMap = this.initMap.bind(this);
+        //this.initMap = this.initMap.bind(this);
         //this.filterMarkers = this.filterMarkers.bind(this);
 
     }
@@ -103,75 +103,55 @@ class App extends Component {
    //Initialize and add the map
    initMap = () => {
 
-    // The map, centered at Vienna
-    var map = new window.google.maps.Map(
-        document.getElementById('map'), 
-        {zoom: 14, 
-          center: {lat: 48.208418, lng: 16.373231}
-        });
-
+        // The map, centered at Vienna
+        var map = new window.google.maps.Map(
+            document.getElementById('map'), 
+            {zoom: 14, 
+            center: {lat: 48.208418, lng: 16.373231}
+            });
+         
+    
+    
         //Show up the markers
         
+        
+
         this.state.locals.forEach(singleLocal =>{  
             var marker = new window.google.maps.Marker({
             position: singleLocal.position,
             map: map,
-            title: singleLocal.name
-        })
+            title: singleLocal.name,
+            //Custom Attribute
+            //https://stackoverflow.com/questions/2564320/adding-ids-to-google-map-markers
+            //retrieve the data: marker.get('store_id');
+            store_id: singleLocal.foursquareId
+            })
         
-        //Push marker in the array that holds markers showing up on our map
-        this.state.allMarkers.push(marker);
-        })
-
-        //Create infowindow 
-        /*let contentString = '<div className="contentInfoWindow">'+
-        '<h3 className="firstHeading">`${this.marker.title}`</h3>'+
-        '<div id="bodyContent">'+
-        '<p><b>`${singleLocal.adress}`</b></p>'+
-        '</div></div>'; 
-
-        var contentString = '<div id="content">'+
-        '<div id="siteNotice">'+
-        '</div>'+
-        '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
-        '<div id="bodyContent">'+
-        '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
-        'sandstone rock formation in the southern part of the '+
-        'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '+
-        'south west of the nearest large town, Alice Springs; 450&#160;km '+
-        '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major '+
-        'features of the Uluru - Kata Tjuta National Park. Uluru is '+
-        'sacred to the Pitjantjatjara and Yankunytjatjara, the '+
-        'Aboriginal people of the area. It has many springs, waterholes, '+
-        'rock caves and ancient paintings. Uluru is listed as a World '+
-        'Heritage Site.</p>'+
-        '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
-        'https://en.wikipedia.org/w/index.php?title=Uluru</a> '+
-        '(last visited June 22, 2009).</p>'+
-        '</div>'+
-        '</div>';
-        
-        var infowindow = new window.google.maps.InfoWindow({
-            content: contentString
-        })
-
-        //https://stackoverflow.com/questions/1875596/have-just-one-infowindow-open-in-google-maps-api-v3
-        //https://stackoverflow.com/questions/24951991/open-only-one-infowindow-at-a-time-google-maps 
-        //Open infowindow 
-        //TODO:only one infowindow can be opened at a time
-        
-        marker.addListener('click', function() {
-        
-        if (test) {
-            infowindow.close();
-            console.log('test true infowindow close');
-        }
+            //window.mapObject = map;
             
-        //if( infowindow ) infowindow.close();    
-            infowindow.setContent ('singleLocal.adress');
-            infowindow.open(map, marker);
-            test = true;
-        */
+            //Create infowindow
+            var infowindow = new window.google.maps.InfoWindow({
+                    content: "Kávézóinformáció"
+            });
+            //https://stackoverflow.com/questions/1875596/have-just-one-infowindow-open-in-google-maps-api-v3
+            //https://stackoverflow.com/questions/24951991/open-only-one-infowindow-at-a-time-google-maps 
+             infowindow = new window.google.maps.InfoWindow({content:'<p>Kávézóinformáció</p>'});
+            
+             //Open infowindow 
+            marker.addListener('click',() => {  
+                infowindow.open(map, marker);
+                this.setState({infoWindowOpened : true});
+
+            });
+          
+            infowindow.setContent (`${singleLocal.name}`);
+            
+          
+            
+            //Push marker in the array that holds markers showing up on our map
+            //this.state.allMarkers.push(marker);
+          
+        });
         
          /*/Update markers on the map according search bar input
         //https://developers.google.com/maps/documentation/javascript/examples/marker-remove         
