@@ -1,17 +1,23 @@
 .sidebarContainer {
 
     box-shadow: 1px 1px 2px 1px rgba(128, 128, 128, 0.2);
-    padding: 2em 2em;
+    padding: 1em 1em;
     color: #444444;
     background-color: #ffffff;
     width: 375px;
     max-width:100%;
+    position: absolute;
+    z-index: 1;
  }
  
  .Sidebar-list li{
      display: block;
      cursor: pointer;
-     padding: 1em;
+     padding: 2em;
      box-shadow: 1px 1px 2px 1px rgba(128, 128, 128, 0.2);
      background-color: white;
+   }
+   .input-field{
+    display: inline-block;
+    padding-left: 2em;
    }
