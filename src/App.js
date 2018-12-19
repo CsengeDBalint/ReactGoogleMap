@@ -10,8 +10,10 @@ class App extends Component {
     constructor(props) {
     super(props);
     this.state = {
-       // allMarkers: [],
-      infoWindowOpened : false,
+        allMarkers: [],
+      //infoWindowOpened : false,
+      //activeMarker : '',
+      infoWindows : [],
       locals: [
         {
             foursquareId: "4b058890f964a520afcd22e3",
@@ -87,7 +89,7 @@ class App extends Component {
         };
 
         //this.initMap = this.initMap.bind(this);
-        //this.filterMarkers = this.filterMarkers.bind(this);
+        
 
     }
 
@@ -102,6 +104,7 @@ class App extends Component {
 
    //Initialize and add the map
    initMap = () => {
+        const { allMarkers } = this.state;
 
         // The map, centered at Vienna
         var map = new window.google.maps.Map(
@@ -110,49 +113,62 @@ class App extends Component {
             center: {lat: 48.208418, lng: 16.373231}
             });
          
-    
+        //Create infowindow
+        var infowindow = new window.google.maps.InfoWindow({content: 'Information about your Café'});
+                
     
         //Show up the markers
-        
-        
-
-        this.state.locals.forEach(singleLocal =>{  
+            this.state.locals.forEach(singleLocal =>{  
             var marker = new window.google.maps.Marker({
             position: singleLocal.position,
             map: map,
+            //map: window.mapObject;
             title: singleLocal.name,
             //Custom Attribute
             //https://stackoverflow.com/questions/2564320/adding-ids-to-google-map-markers
             //retrieve the data: marker.get('store_id');
             store_id: singleLocal.foursquareId
             })
-        
-            //window.mapObject = map;
+            console.log('markers id:' + marker.store_id);
+             //Push marker in the array that holds markers showing up on our map
+             this.state.allMarkers.push(marker);
+
+             this.setState({allMarkers:allMarkers});
             
-            //Create infowindow
-            var infowindow = new window.google.maps.InfoWindow({
-                    content: "Kávézóinformáció"
-            });
-            //https://stackoverflow.com/questions/1875596/have-just-one-infowindow-open-in-google-maps-api-v3
+            
+            
+             //https://stackoverflow.com/questions/1875596/have-just-one-infowindow-open-in-google-maps-api-v3
             //https://stackoverflow.com/questions/24951991/open-only-one-infowindow-at-a-time-google-maps 
-             infowindow = new window.google.maps.InfoWindow({content:'<p>Kávézóinformáció</p>'});
             
              //Open infowindow 
-            marker.addListener('click',() => {  
+            marker.addListener('click',() => {
+                //infowindow.close();
+                infowindow.setContent (`${singleLocal.name}`);
                 infowindow.open(map, marker);
-                this.setState({infoWindowOpened : true});
-
+                //this.setState({infoWindowOpened : true, activeMarker: marker});
+                //this.state.infoWindows.push(infowindow);
+                
             });
-          
-            infowindow.setContent (`${singleLocal.name}`);
             
-          
+                
+            infowindow.addListener('clickout', function () {
+            // marker.setIcon(defaultIcon);
+            infowindow.setMarker(null);
+            // window.google.maps.event.clearInstanceListeners(marker);
+            });
             
-            //Push marker in the array that holds markers showing up on our map
-            //this.state.allMarkers.push(marker);
+            
+            
+           
           
-        });
+            });
         
+            /*marker.addListener(marker, "click", function(event) {
+                for (let i = 0; i < this.state.infoWindows.length; i++ ) { 
+                     this.state.infoWindows[i].close();
+                }
+            });
+            */
          /*/Update markers on the map according search bar input
         //https://developers.google.com/maps/documentation/javascript/examples/marker-remove         
          let filterMarkers = (query) => {
