@@ -137,13 +137,11 @@ class App extends Component {
             
             
             
-             //https://stackoverflow.com/questions/1875596/have-just-one-infowindow-open-in-google-maps-api-v3
-            //https://stackoverflow.com/questions/24951991/open-only-one-infowindow-at-a-time-google-maps 
-            
-             //Open infowindow 
+            let content = `<div><h2>${singleLocal.name}</h2><p><strong>Address:</strong>${singleLocal.address}</p></p></div>`; 
+            //Open infowindow 
             marker.addListener('click',() => {
                 //infowindow.close();
-                infowindow.setContent (`${singleLocal.name}`);
+                infowindow.setContent (content);
                 infowindow.open(map, marker);
                 //this.setState({infoWindowOpened : true, activeMarker: marker});
                 //this.state.infoWindows.push(infowindow);
@@ -151,11 +149,6 @@ class App extends Component {
             });
             
                 
-            infowindow.addListener('clickout', function () {
-            // marker.setIcon(defaultIcon);
-            infowindow.setMarker(null);
-            // window.google.maps.event.clearInstanceListeners(marker);
-            });
             
             
             
