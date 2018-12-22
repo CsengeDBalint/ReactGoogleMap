@@ -10,10 +10,9 @@ class App extends Component {
     constructor(props) {
     super(props);
     this.state = {
-        allMarkers: [],
-      //infoWindowOpened : false,
-      //activeMarker : '',
+      allMarkers: [],
       infoWindows : [],
+      selectedLocalVenue:'',
       locals: [
         {
             foursquareId: "4b058890f964a520afcd22e3",
@@ -102,6 +101,25 @@ class App extends Component {
     loadJS('https://maps.googleapis.com/maps/api/js?key=AIzaSyCLVCGUR9jUVe3DkVKspecXg0pCgMK1E1M&callback=initMap')
     }
 
+
+    // Fetch data with Foursquare Api
+    selectLocalVenue = venue =>{
+        this.setState({
+            selectedLocalVenue: venue
+        });
+
+        const foursquare_client_id = "FTPQMQKRBNIJJDPKNGWFMUHD3KBP1OIYX0YZ5BU250CILCD4";
+        const foursquare_client_secret = "EZ3ACLWE1RBXRJSHLQCE0RU4DIYJTQB1SOEVVIK10OFKCR1F";
+        const foursquare_version = 20181108;
+
+    fetch(`
+        https://api.foursquare.com/v2/venues/explore?ll=48.208418,16.373231&client_id=${foursquare_client_id}&client_secret=${foursquare_client_secret}&v=${foursquare_version}`)
+      .then(response => response.json())
+      .then(data => console.log(data))
+        //console.log(data.response.groups[0].items)
+      .catch(err => console.log('Error message ' + err))
+    };
+
    //Initialize and add the map
    initMap = () => {
         const { allMarkers } = this.state;
@@ -129,7 +147,7 @@ class App extends Component {
             //retrieve the data: marker.get('store_id');
             store_id: singleLocal.foursquareId
             })
-            console.log('markers id:' + marker.store_id);
+            //console.log('markers id:' + marker.store_id);
              //Push marker in the array that holds markers showing up on our map
              this.state.allMarkers.push(marker);
 
@@ -140,28 +158,16 @@ class App extends Component {
             let content = `<div><h2>${singleLocal.name}</h2><p><strong>Address:</strong>${singleLocal.address}</p></p></div>`; 
             //Open infowindow 
             marker.addListener('click',() => {
-                //infowindow.close();
                 infowindow.setContent (content);
                 infowindow.open(map, marker);
-                //this.setState({infoWindowOpened : true, activeMarker: marker});
-                //this.state.infoWindows.push(infowindow);
                 
             });
             
-                
-            
-            
-            
-           
-          
             });
         
-            /*marker.addListener(marker, "click", function(event) {
-                for (let i = 0; i < this.state.infoWindows.length; i++ ) { 
-                     this.state.infoWindows[i].close();
-                }
-            });
-            */
+           
+
+
          /*/Update markers on the map according search bar input
         //https://developers.google.com/maps/documentation/javascript/examples/marker-remove         
          let filterMarkers = (query) => {
@@ -210,7 +216,10 @@ class App extends Component {
         return (
         <div>
             <Header />
-            <SidebarContainer   locals ={this.state.locals}
+            <SidebarContainer   locals = {this.state.locals}
+                                select = {this.selectLocalVenue}
+                                selectedLocal = {this.state.selectedLocalVenue}
+                                
                                 //filterMarkers={this.filterMarkers}
                                 />
             <div id='map'></div>
