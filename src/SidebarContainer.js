@@ -5,30 +5,35 @@ import './SidebarContainer.css';
 
 class SidebarContainer extends Component {
     constructor(props) {
-        super(props); 
+        super(props);
+           
             this.state = {
                 query:'',
                 listOfLokalElements: '',
-                newLocals:''
+                newLocals:'',
+                ElementColorDefault : true,
                 //shownMarkers: [],
                 //singleMarker: []
             };
-
         //this.filterLokals = this.filterLokals.bind(this);
     
     }
 
+    changeSelectedElementColor(){
+        this.setState({ElementColorDefault : !this.state.ElementColorDefault})
+    }
+
    listOfSelectedLocals = [];
-   /*
+   
     updateQuery = (query) => {
         this.setState({query: query})
     }
-    
+    /*
     clearQuery = () => {
         this.setState({ query: '' })
     }
     */
-  
+  /*
    filterLocals  = () => {
         let listOfLokalElements = [];
        
@@ -81,13 +86,14 @@ class SidebarContainer extends Component {
             listOfLokalElements: listOfLokalElements,
             //query : query
         });
-        */ 
+        
     }
-  
+    */ 
 
+   
     render() {
-        /*console.log('Props', this.props)
-
+       
+        //console.log('Props', this.props)
         let showingListOfLocals;
         if (this.state.query) {
             const match = new RegExp(escapeRegExp(this.state.query), 'i');
@@ -98,7 +104,8 @@ class SidebarContainer extends Component {
                 showingListOfLocals = this.props.locals;
             };
         //Passing showingListOfLocals array to App.js
-        */
+       
+        let li_class = this.state.ElementColorDefault ? ".Sidebar-list li" : ".Sidebar-list li_selected";
        
 
         /*/https://developers.google.com/maps/documentation/javascript/examples/marker-remove         
@@ -139,9 +146,6 @@ class SidebarContainer extends Component {
             }
         }
        */
-        
-    
-
 
         return (
             <aside className ="sidebarContainer" >
@@ -150,9 +154,9 @@ class SidebarContainer extends Component {
                         className="input-field" 
                         type="text" 
                         id="search_box"
-                        /*value={this.state.query} */
-                        onChange={ this.filterLocals}
-                        //onChange={event => this.updateQuery(event.target.value) }   
+                        value={this.state.query} 
+                        //onChange={ this.filterLocals}
+                        onChange={event => this.updateQuery(event.target.value) }   
                         placeholder="Search for café..." 
                     />
                     <button
@@ -163,10 +167,10 @@ class SidebarContainer extends Component {
                     </button>
                 </form>     
                 <ul className="Sidebar-list">
-                    {this.state.newLocals.map((listElement) => (
-                    <li className= "li" key={listElement.foursquareId} selectedLocal = {this.props.selectedLocalVenue} onClick = {this.props.select}>
+                    {showingListOfLocals.map((listElement) => (
+                    <li className= {li_class} key={listElement.foursquareId} selectedlocal = {this.props.selectedLocalVenue} onClick = {this.props.select} >
                         {listElement.name}
-                        
+                        {this.props.error}
                     </li>))
                     }
                 </ul>
@@ -176,3 +180,6 @@ class SidebarContainer extends Component {
 }
 
 export default SidebarContainer;
+
+//add css: https://stackoverflow.com/questions/41978408/changing-style-of-a-button-on-click
+// TODO: add this.changeColor.bind(this) to onClick
