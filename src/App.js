@@ -4,6 +4,7 @@ import './App.css';
 
 import Header from './Header';
 import SidebarContainer from './SidebarContainer';
+import {locals} from './localsList.js';
 
 class App extends Component {
 
@@ -13,7 +14,9 @@ class App extends Component {
       allMarkers: [],
       infoWindows : [],
       selectedLocalVenue:'',
-      locals: [
+      //cafeLocals:[],
+      error: null,
+      /*locals: [
         {
             foursquareId: "4b058890f964a520afcd22e3",
             name:"Café Central",
@@ -84,9 +87,9 @@ class App extends Component {
             address: "Franziskanerplatz 3",
             postalcode: "1010 Vienna"
         }
-    ]
+    ]*/
         };
-
+        
         //this.initMap = this.initMap.bind(this);
         
 
@@ -104,21 +107,57 @@ class App extends Component {
 
     // Fetch data with Foursquare Api
     selectLocalVenue = venue =>{
-        this.setState({
-            selectedLocalVenue: venue
-        });
-
         const foursquare_client_id = "FTPQMQKRBNIJJDPKNGWFMUHD3KBP1OIYX0YZ5BU250CILCD4";
         const foursquare_client_secret = "EZ3ACLWE1RBXRJSHLQCE0RU4DIYJTQB1SOEVVIK10OFKCR1F";
         const foursquare_version = 20181108;
 
-    fetch(`
-        https://api.foursquare.com/v2/venues/explore?ll=48.208418,16.373231&client_id=${foursquare_client_id}&client_secret=${foursquare_client_secret}&v=${foursquare_version}`)
-      .then(response => response.json())
-      .then(data => console.log(data))
-        //console.log(data.response.groups[0].items)
-      .catch(err => console.log('Error message ' + err))
+        const venue_id = locals[0]['foursquareId'];
+        
+        //https://foursquare.com/developers/explore#req=venues%2F49eeaf08f964a52078681fe3%3F
+        //(`https://api.foursquare.com/v2/venues/${this.state.locals.foursquareId}&client_id=${foursquare_client_id}&client_secret=${foursquare_client_secret}&v=${foursquare_version}`)
+        //(`https://api.foursquare.com/v2/venues/explore?ll=48.208418,16.373231&client_id=${foursquare_client_id}&client_secret=${foursquare_client_secret}&v=${foursquare_version}`)
+        
+        const controller = new AbortController();
+        const signal = controller.signal;
+
+        this.setState({
+            //selectedLocalVenue: venue,
+            dataLoadingInfo: null
+        });
+
+    if(venue) {
+        fetch(`https://api.foursquare.com/v2/venues/${venue_id}?client_id=${foursquare_client_id}&client_secret=${foursquare_client_secret}&v=${foursquare_version}`, { signal })
+        //fetch(`https://api.foursquare.com/v2/venues/explore?ll=48.208418,16.373231&section=coffee&client_id=${foursquare_client_id}&client_secret=${foursquare_client_secret}&v=${foursquare_version}`, { signal })
+        .then(response => response.json())
+        .then(response => {
+            if (response.meta.code === 200) {
+                console.log('Data is loading...')
+                this.setState({error: response.response})
+            } else {
+                console.log('Problem during loading data:' + response.meta.errorType + response.meta.errorDetail)
+                console.log('current venue_id:' + {venue_id})
+                this.setState({error: response.meta.errorType})   
+            }
+            })
+        .catch(error => {
+                if (error.name === 'AbortError') {
+                    console.error('Fetch aborted');
+                } else {
+                    console.error('Another error', error)
+                }
+            this.setState({ error })
+        }) ;
+
+        this.setState({
+            selectedLocalVenue: venue
+        });
+        console.log('selectedLocalVenue értéke:' + this.state.selectedLocalVenue);
+
+
+    }
     };
+
+
 
    //Initialize and add the map
    initMap = () => {
@@ -136,7 +175,7 @@ class App extends Component {
                 
     
         //Show up the markers
-            this.state.locals.forEach(singleLocal =>{  
+            locals.forEach(singleLocal =>{  
             var marker = new window.google.maps.Marker({
             position: singleLocal.position,
             map: map,
@@ -207,18 +246,21 @@ class App extends Component {
             }
         }
        */
-    }    
-
-     
-
+    }
 
     render() {
+        if(this.props.dataLoadingInfo) {
+            return<p>Something went wrong.</p>;
+        }
+        
         return (
         <div>
             <Header />
-            <SidebarContainer   locals = {this.state.locals}
+            <SidebarContainer   locals = {locals}
+                                //cafeLocals = {this.state.cafeLocals}
                                 select = {this.selectLocalVenue}
                                 selectedLocal = {this.state.selectedLocalVenue}
+                                error ={this.state.error}
                                 
                                 //filterMarkers={this.filterMarkers}
                                 />
