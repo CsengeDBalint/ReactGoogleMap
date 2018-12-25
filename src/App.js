@@ -124,7 +124,8 @@ class App extends Component {
             //selectedLocalVenue: venue,
             dataLoadingInfo: null
         });
-
+        //TODO: output the venue details in the ListItemDetails
+        //TODO: improve error handling See: The Road to learn React page 110
     if(venue) {
         fetch(`https://api.foursquare.com/v2/venues/${venue_id}?client_id=${foursquare_client_id}&client_secret=${foursquare_client_secret}&v=${foursquare_version}`, { signal })
         //fetch(`https://api.foursquare.com/v2/venues/explore?ll=48.208418,16.373231&section=coffee&client_id=${foursquare_client_id}&client_secret=${foursquare_client_secret}&v=${foursquare_version}`, { signal })

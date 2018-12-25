@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import escapeRegExp from 'escape-string-regexp';
 
 import './SidebarContainer.css';
+import ListItemDetails from './ListItemDetails';
 
 class SidebarContainer extends Component {
     constructor(props) {
@@ -171,6 +172,9 @@ class SidebarContainer extends Component {
                     <li className= {li_class} key={listElement.foursquareId} selectedlocal = {this.props.selectedLocalVenue} onClick = {this.props.select} >
                         {listElement.name}
                         {this.props.error}
+                        <ListItemDetails 
+                            selectedlocal = {this.props.selectedLocalVenue}
+                        />
                     </li>))
                     }
                 </ul>
