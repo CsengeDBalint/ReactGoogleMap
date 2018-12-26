@@ -108,7 +108,7 @@ class SidebarContainer extends Component {
             };
         //Passing showingListOfLocals array to App.js
        
-        let li_class = this.state.ElementColorDefault ? ".Sidebar-list li" : ".Sidebar-list li_selected";
+        //let li_class = this.state.ElementColorDefault ? ".Sidebar-list li" : ".Sidebar-list li_selected";
        
 
         /*/https://developers.google.com/maps/documentation/javascript/examples/marker-remove         
@@ -182,6 +182,9 @@ class SidebarContainer extends Component {
                                     >
                                       <p><strong>{singleLocal.venue.name}</strong></p>
                                       <p>{singleLocal.venue.location.address}</p>
+                                      <p>{singleLocal.venue.location.formattedAddress[1]}</p>
+                                      <p>GPS Data:</p> 
+                                      <p>lat:{singleLocal.venue.location.labeledLatLngs[0].lat}, lng:{singleLocal.venue.location.labeledLatLngs[0].lng}</p>
                                        
                                     </li>
                                     ))}
