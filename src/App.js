@@ -122,37 +122,44 @@ class App extends Component {
 
         this.setState({
             //selectedLocalVenue: venue,
-            dataLoadingInfo: null
+            error: null
         });
         //TODO: output the venue details in the ListItemDetails
         //TODO: improve error handling See: The Road to learn React page 110
     if(venue) {
         fetch(`https://api.foursquare.com/v2/venues/${venue_id}?client_id=${foursquare_client_id}&client_secret=${foursquare_client_secret}&v=${foursquare_version}`, { signal })
         //fetch(`https://api.foursquare.com/v2/venues/explore?ll=48.208418,16.373231&section=coffee&client_id=${foursquare_client_id}&client_secret=${foursquare_client_secret}&v=${foursquare_version}`, { signal })
+        
         .then(response => response.json())
-        .then(response => {
-            if (response.meta.code === 200) {
-                console.log('Data is loading...')
-                this.setState({error: response.response})
+        .then(data => {
+            //https://flaviocopes.com/fetch-api/#
+            setTimeout(() => controller.abort(), 5 * 1000)
+            
+            if (data.meta.code === 200) {
+                console.log('Data is loading...');
+                this.setState({selectedLocalVenue: data.response.venue.contact})
             } else {
-                console.log('Problem during loading data:' + response.meta.errorType + response.meta.errorDetail)
+                console.log('Problem during loading data:' + data.meta.errorType + data.meta.errorDetail)
                 console.log('current venue_id:' + {venue_id})
-                this.setState({error: response.meta.errorType})   
+                this.setState({error: data.meta.errorType})   
             }
             })
-        .catch(error => {
-                if (error.name === 'AbortError') {
+        .catch(abortError => {
+                if (abortError.name === 'AbortError') {
                     console.error('Fetch aborted');
+                    this.setState({error: abortError.name})  
                 } else {
-                    console.error('Another error', error)
+                    console.error('Another error', abortError)
                 }
-            this.setState({ error })
+            this.setState({ error: abortError })
         }) ;
 
-        this.setState({
-            selectedLocalVenue: venue
+        /*this.setState({
+            selectedLocalVenue: selectedLocalVenue
         });
-        console.log('selectedLocalVenue értéke:' + this.state.selectedLocalVenue);
+        */
+        console.log('selectedLocalVenue:' + this.state.selectedLocalVenue);
+        console.log('errors value: '+ this.state.error)
 
 
     }
