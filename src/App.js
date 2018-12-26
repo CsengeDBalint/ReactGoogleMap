@@ -13,7 +13,8 @@ class App extends Component {
     this.state = {
       allMarkers: [],
       infoWindows : [],
-      selectedLocalVenue:null,
+      selectedLocalVenue: [],
+      localsVenues:[],
       //cafeLocals:[],
       error: null
         };
@@ -24,16 +25,30 @@ class App extends Component {
     }
 
     componentDidMount = () => {
-    
+        //fetch(`https://api.foursquare.com/v2/venues/4b058890f964a520afcd22e3?client_id=FTPQMQKRBNIJJDPKNGWFMUHD3KBP1OIYX0YZ5BU250CILCD&client_secret=EZ3ACLWE1RBXRJSHLQCE0RU4DIYJTQB1SOEVVIK10OFKCR1F&v=20181108`)
+        fetch(`https://api.foursquare.com/v2/venues/explore?ll=48.208418,16.373231&query=cafe&client_id=FTPQMQKRBNIJJDPKNGWFMUHD3KBP1OIYX0YZ5BU250CILCD4&client_secret=EZ3ACLWE1RBXRJSHLQCE0RU4DIYJTQB1SOEVVIK10OFKCR1F&v=20181108`)
+            
+            .then(response => response.json())
+            .then(data => {
+                    this.setState({localsVenues: data.response.groups[0].items});
+                    console.log(data.response.groups[0].items)
+                })
+            .catch(error => {
+                console.log("Error : " + error)
+        }) ;
+
     // Connect initMap() to the global window
     window.initMap = this.initMap;
     
     // Asynchronously load the Google Maps script, passing in the callback reference
     loadJS('https://maps.googleapis.com/maps/api/js?key=AIzaSyCLVCGUR9jUVe3DkVKspecXg0pCgMK1E1M&callback=initMap')
+    
+    
+    
     }
 
 
-    // Fetch data with Foursquare Api
+    /*/ Fetch data with Foursquare Api
     selectLocalVenue = venue =>{
         const foursquare_client_id = "FTPQMQKRBNIJJDPKNGWFMUHD3KBP1OIYX0YZ5BU250CILCD4";
         const foursquare_client_secret = "EZ3ACLWE1RBXRJSHLQCE0RU4DIYJTQB1SOEVVIK10OFKCR1F";
@@ -88,14 +103,14 @@ class App extends Component {
         /*this.setState({
             selectedLocalVenue: selectedLocalVenue
         });
-        */
+        
         console.log('selectedLocalVenue:' + this.state.selectedLocalVenue);
         console.log('errors value: '+ this.state.error)
 
 
     }
     };
-
+    */
 
 
    //Initialize and add the map
@@ -188,9 +203,6 @@ class App extends Component {
     }
 
     render() {
-        if(this.props.dataLoadingInfo) {
-            return<p>Something went wrong.</p>;
-        }
         
         return (
         <div>
@@ -200,7 +212,8 @@ class App extends Component {
                                 select = {this.selectLocalVenue}
                                 selectedLocal = {this.state.selectedLocalVenue}
                                 error ={this.state.error}
-                                
+                                selectedLocalVenue = {this.state.selectLocalVenue}
+                                localsVenues = {this.state.localsVenues}
                                 //filterMarkers={this.filterMarkers}
                                 />
             <div id='map'></div>

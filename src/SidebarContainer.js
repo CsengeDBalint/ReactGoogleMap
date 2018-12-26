@@ -94,6 +94,8 @@ class SidebarContainer extends Component {
    
     render() {
        
+        
+
         //console.log('Props', this.props)
         let showingListOfLocals;
         if (this.state.query) {
@@ -149,6 +151,7 @@ class SidebarContainer extends Component {
        */
 
         return (
+            
             <aside className ="sidebarContainer" >
                 <form className="form">
                     <input 
@@ -167,16 +170,24 @@ class SidebarContainer extends Component {
                     List
                     </button>
                 </form>     
-                <ul className="Sidebar-list">
-                    {showingListOfLocals.map((listElement) => (
-                    <li className= {li_class} key={listElement.foursquareId} selectedlocal = {this.props.selectedLocalVenue} onClick = {this.props.select} >
-                        {listElement.name}
-                        {this.props.error}
-                        
-                        
-                    </li>))
-                    }
-                </ul>
+                {this.props.selectedLocalVenue !==0 && 
+                            (//https://stackoverflow.com/questions/46424537/reactjs-error-objects-are-not-valid-as-a-react-child
+                            //BUG: TypeError: Cannot read property 'map' of undefined
+                               <ul className ="Sidebar-list">
+                                  {this.props.localsVenues.map((singleLocal) => (
+                                    <li
+                                      key={singleLocal.venue.id}
+                                      className= "li"
+                                      //onClick={() => this.props.handleClick(singleLocal.venue.id)}
+                                    >
+                                      <p><strong>{singleLocal.venue.name}</strong></p>
+                                      <p>{singleLocal.venue.location.address}</p>
+                                       
+                                    </li>
+                                    ))}
+                                </ul>
+                                )
+                              }
             </aside>
         );
     }
