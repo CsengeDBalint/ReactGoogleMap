@@ -31,17 +31,23 @@ class App extends Component {
             .then(response => response.json())
             .then(data => {
                     this.setState({localsVenues: data.response.groups[0].items});
-                    console.log(data.response.groups[0].items)
+                    // Asynchronously load the Google Maps script, passing in the callback reference
+                    loadJS('https://maps.googleapis.com/maps/api/js?key=AIzaSyCLVCGUR9jUVe3DkVKspecXg0pCgMK1E1M&callback=initMap')
+                    window.initMap = this.initMap;
+
+                    console.log(data.response.groups[0].items);
+                    console.log('localsVenues in state:' + JSON.stringify(this.state.localsVenues));
+
                 })
             .catch(error => {
                 console.log("Error : " + error)
         }) ;
 
     // Connect initMap() to the global window
-    window.initMap = this.initMap;
+    //window.initMap = this.initMap;
     
     // Asynchronously load the Google Maps script, passing in the callback reference
-    loadJS('https://maps.googleapis.com/maps/api/js?key=AIzaSyCLVCGUR9jUVe3DkVKspecXg0pCgMK1E1M&callback=initMap')
+    //loadJS('https://maps.googleapis.com/maps/api/js?key=AIzaSyCLVCGUR9jUVe3DkVKspecXg0pCgMK1E1M&callback=initMap')
     
     
     
@@ -120,7 +126,7 @@ class App extends Component {
         // The map, centered at Vienna
         var map = new window.google.maps.Map(
             document.getElementById('map'), 
-            {zoom: 14, 
+            {zoom: 15, 
             center: {lat: 48.208418, lng: 16.373231}
             });
          
@@ -129,16 +135,16 @@ class App extends Component {
                 
     
         //Show up the markers
-            locals.forEach(singleLocal =>{  
+            this.state.localsVenues.map(singleLocal =>{  
             var marker = new window.google.maps.Marker({
-            position: singleLocal.position,
-            map: map,
-            //map: window.mapObject;
-            title: singleLocal.name,
-            //Custom Attribute
-            //https://stackoverflow.com/questions/2564320/adding-ids-to-google-map-markers
-            //retrieve the data: marker.get('store_id');
-            store_id: singleLocal.foursquareId
+                position: {lat: singleLocal.venue.location.lat, lng: singleLocal.venue.location.lng},
+                map: map,
+                //map: window.mapObject;
+                title: singleLocal.venue.name,
+                //Custom Attribute
+                //https://stackoverflow.com/questions/2564320/adding-ids-to-google-map-markers
+                //retrieve the data: marker.get('store_id');
+                store_id: singleLocal.venue.id
             })
             //console.log('markers id:' + marker.store_id);
              //Push marker in the array that holds markers showing up on our map
@@ -148,7 +154,7 @@ class App extends Component {
             
             
             
-            let content = `<div><h2>${singleLocal.name}</h2><p><strong>Address:</strong>${singleLocal.address}</p></p></div>`; 
+            let content = `<div><h2>${singleLocal.title}</h2><p><strong>Address:</strong>${singleLocal.position}</p></p></div>`; 
             //Open infowindow 
             marker.addListener('click',() => {
                 infowindow.setContent (content);
