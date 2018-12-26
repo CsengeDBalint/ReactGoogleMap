@@ -8,6 +8,8 @@
     max-width:100%;
     position: absolute;
     z-index: 1;
+    overflow: scroll;
+    height: 100%;
  }
  
  .Sidebar-list li{
