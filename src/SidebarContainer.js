@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import escapeRegExp from 'escape-string-regexp';
 
 import './SidebarContainer.css';
+import {locals} from './localsList.js';
 //import ListItemDetails from './ListItemDetails';
 
 class SidebarContainer extends Component {
@@ -9,53 +10,66 @@ class SidebarContainer extends Component {
         super(props);
            
             this.state = {
-                query:'',
+                query: '',
                 listOfLokalElements: '',
-                newLocals:'',
-                ElementColorDefault : true,
+                //newLocals:[],
+                ElementColorDefault : true
                 //shownMarkers: [],
                 //singleMarker: []
             };
         //this.filterLokals = this.filterLokals.bind(this);
-    
+        //const{localsVenues} = this.props;  
     }
 
     changeSelectedElementColor(){
         this.setState({ElementColorDefault : !this.state.ElementColorDefault})
     }
-
+    /*
    listOfSelectedLocals = [];
    
+    
     updateQuery = (query) => {
         this.setState({query: query})
     }
+    */
+
+    componentWillMount() {
+        this.setState({
+            newLocals : this.props.newLocals
+        })
+        console.log('after ComponentWillMount the value of newLocals in state:' + this.state.newLocals)
+    }
+    
     /*
     clearQuery = () => {
         this.setState({ query: '' })
     }
     */
-  /*
-   filterLocals  = () => {
-        let listOfLokalElements = [];
-       
+  
+  filterLocals  = () => {
+        //let listOfLokalElements =[];
         //console.log(document.getElementById('search_box').value);
         //console.log('this.state.query értéke:' + this.state.query);
         let userValue = document.getElementById('search_box').value;
         var new_locals = [];
 
-        this.props.locals.forEach(function(local) {
+        //TODO: in the endversion change "locals" to "this.props.newLocals" and change the code in render()
+        this.props.newLocals.forEach(function(local) {
             //console.log('megadott érték:'+userValue);
             //console.log('keresett érték:'+local.name);
-            if (local.name === userValue){
+            if (local.venue.location.name === userValue){
                new_locals.push(local);
-               console.log('talalat');
+               console.log('volltreffer');
             }
-        }); 
-        this.setState({newLocals:new_locals}); 
-        console.log('new_locals értéke:' + new_locals);
+        });
+        this.setState({ newLocals : new_locals});
+        
+        console.log('value of newLocals:' + this.state.newLocals);
 
         /*this.setState({query: userValue});
-    //this.props.locals.forEach(function (LokalElement) {
+    //this.props.locals.forEach(function (LokalElement) { 
+        let listOfLokalElements = [];
+       
             if (this.state.query) {
                // console.log('Query tartalma' + this.state.query)
                 //const match = new RegExp(escapeRegExp(this.state.query), 'i');
@@ -87,27 +101,27 @@ class SidebarContainer extends Component {
             listOfLokalElements: listOfLokalElements,
             //query : query
         });
-        
+        */
     }
-    */ 
+     
 
    
     render() {
        
         
 
-        //console.log('Props', this.props)
+        /*/console.log('Props', this.props)
         let showingListOfLocals;
         if (this.state.query) {
             const match = new RegExp(escapeRegExp(this.state.query), 'i');
-    
-            showingListOfLocals = this.props.locals.filter((local) => 
+            console.log('value of current query: ' + this.state.query)
+            showingListOfLocals = this.props.localsVenues.filter((local) => 
                 match.test(local.name));               
             } else {
-                showingListOfLocals = this.props.locals;
+                showingListOfLocals = this.props.localsVenues;
             };
         //Passing showingListOfLocals array to App.js
-       
+        */
         //let li_class = this.state.ElementColorDefault ? ".Sidebar-list li" : ".Sidebar-list li_selected";
        
 
@@ -158,10 +172,10 @@ class SidebarContainer extends Component {
                         className="input-field" 
                         type="text" 
                         id="search_box"
-                        value={this.state.query} 
-                        //onChange={ this.filterLocals}
-                        onChange={event => this.updateQuery(event.target.value) }   
-                        placeholder="Search for café..." 
+                        //value={this.state.query} 
+                        onChange={ this.filterLocals}  
+                        //onChange={event => this.updateQuery(event.target.value) }   
+                        placeholder="Search café..." 
                     />
                     <button
                         className="list-button"
@@ -170,27 +184,28 @@ class SidebarContainer extends Component {
                     List
                     </button>
                 </form>     
-                {this.props.selectedLocalVenue !==0 && 
-                            (//https://stackoverflow.com/questions/46424537/reactjs-error-objects-are-not-valid-as-a-react-child
-                            //BUG: TypeError: Cannot read property 'map' of undefined
-                               <ul className ="Sidebar-list">
-                                  {this.props.localsVenues.map((singleLocal) => (
-                                    <li
-                                      key={singleLocal.venue.id}
-                                      className= "li"
-                                      //onClick={() => this.props.handleClick(singleLocal.venue.id)}
-                                    >
-                                      <p><strong>{singleLocal.venue.name}</strong></p>
-                                      <p>{singleLocal.venue.location.address}</p>
-                                      <p>{singleLocal.venue.location.formattedAddress[1]}</p>
-                                      <p>GPS Data:</p> 
-                                      <p>lat:{singleLocal.venue.location.labeledLatLngs[0].lat}, lng:{singleLocal.venue.location.labeledLatLngs[0].lng}</p>
-                                       
-                                    </li>
-                                    ))}
-                                </ul>
-                                )
-                              }
+                    {(//https://stackoverflow.com/questions/46424537/reactjs-error-objects-are-not-valid-as-a-react-child
+                        //BUG: TypeError: Cannot read property 'map' of undefined
+                        <ul className ="Sidebar-list">
+                            {this.props.newLocals.map((singleLocal) => (
+                                <li
+                                key={singleLocal.venue.id}
+                                className= "li"
+                                //onClick={() => this.props.handleClick(singleLocal.venue.id)}
+                                >
+                                <p><strong>{singleLocal.venue.name}</strong></p>
+                                <p>{singleLocal.venue.location.address}</p>
+                                <p>{singleLocal.venue.location.formattedAddress[1]}</p>
+                                <p>GPS Data:</p> 
+                                <p>lat:{singleLocal.venue.location.labeledLatLngs[0].lat}, lng:{singleLocal.venue.location.labeledLatLngs[0].lng}</p>
+                                    <p/>
+                                    {this.props.error}
+                                </li>
+                                ))}
+                            </ul>
+                            )
+                    }
+                            
             </aside>
         );
     }
