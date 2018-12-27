@@ -220,7 +220,7 @@ class App extends Component {
         return (
         <div>
             <Header />
-            <SidebarContainer   locals = {locals}
+            <SidebarContainer   //locals = {locals}
                                 //cafeLocals = {this.state.cafeLocals}
                                 select = {this.selectLocalVenue}
                                 selectedLocal = {this.state.selectedLocalVenue}
