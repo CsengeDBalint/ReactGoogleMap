@@ -4,7 +4,7 @@ import './App.css';
 
 import Header from './Header';
 import SidebarContainer from './SidebarContainer';
-import {locals} from './localsList.js';
+//import {locals} from './localsList.js';
 
 class App extends Component {
 
@@ -15,6 +15,7 @@ class App extends Component {
       infoWindows : [],
       selectedLocalVenue: [],
       localsVenues:[],
+      newLocals: [],
       //cafeLocals:[],
       error: null
         };
@@ -30,7 +31,10 @@ class App extends Component {
             
             .then(response => response.json())
             .then(data => {
-                    this.setState({localsVenues: data.response.groups[0].items});
+                    this.setState({
+                        localsVenues: data.response.groups[0].items,
+                        newLocals : data.response.groups[0].items
+                    });
                     // Asynchronously load the Google Maps script, passing in the callback reference
                     loadJS('https://maps.googleapis.com/maps/api/js?key=AIzaSyCLVCGUR9jUVe3DkVKspecXg0pCgMK1E1M&callback=initMap')
                     window.initMap = this.initMap;
@@ -135,7 +139,7 @@ class App extends Component {
                 
     
         //Show up the markers
-            this.state.localsVenues.map(singleLocal =>{  
+            this.state.localsVenues.forEach(singleLocal =>{  
             var marker = new window.google.maps.Marker({
                 position: {lat: singleLocal.venue.location.lat, lng: singleLocal.venue.location.lng},
                 map: map,
@@ -209,6 +213,8 @@ class App extends Component {
        */
     }
 
+    
+
     render() {
         
         return (
@@ -220,8 +226,8 @@ class App extends Component {
                                 selectedLocal = {this.state.selectedLocalVenue}
                                 error ={this.state.error}
                                 selectedLocalVenue = {this.state.selectLocalVenue}
-                                localsVenues = {this.state.localsVenues}
-                                //filterMarkers={this.filterMarkers}
+                                newLocals = {this.state.localsVenues}
+                               
                                 />
             <div id='map'></div>
         </div>
