@@ -44,7 +44,8 @@ class App extends Component {
 
                 })
             .catch(error => {
-                console.log("Error : " + error)
+                console.log("Error : " + error);
+                alert("An error occured while fetching data by Foursquare Api" + error);
         }) ;
 
     // Connect initMap() to the global window
@@ -245,5 +246,7 @@ function loadJS(src) {
   script.async = true;
   ref.parentNode.insertBefore(script, ref);
   
-  //TODO: add errormessage
+  script.onerror = function () {
+    document.write('An error occured while loading Google Maps')
+  };
 }
