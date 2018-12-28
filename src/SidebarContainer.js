@@ -17,8 +17,6 @@ class SidebarContainer extends Component {
                 //shownMarkers: [],
                 //singleMarker: []
             };
-        //this.filterLokals = this.filterLokals.bind(this);
-        //const{localsVenues} = this.props;  
     }
 
      /*changeSelectedElementColor(){
@@ -193,7 +191,7 @@ class SidebarContainer extends Component {
                                 <li
                                 key={singleLocal.venue.id}
                                 className= "li"
-                                //onClick={() => this.props.handleClick(singleLocal.venue.id)}
+                                onClick={() => this.props.clickLocalFromList(singleLocal.venue.id)}
                                 >
                                 <h2><span aria-labelledby="location name"><strong>{singleLocal.venue.name}</strong></span></h2>
                                 <p><span aria-labelledby="location address">{singleLocal.venue.location.address}</span></p>

@@ -47,17 +47,11 @@ class App extends Component {
                 console.log("Error : " + error);
                 alert("An error occured while fetching data by Foursquare Api" + error);
         }) ;
-
-    // Connect initMap() to the global window
-    //window.initMap = this.initMap;
-    
-    // Asynchronously load the Google Maps script, passing in the callback reference
-    //loadJS('https://maps.googleapis.com/maps/api/js?key=AIzaSyCLVCGUR9jUVe3DkVKspecXg0pCgMK1E1M&callback=initMap')
-    
     
     
     }
 
+    
 
     /*/ Fetch data with Foursquare Api
     selectLocalVenue = venue =>{
@@ -85,7 +79,6 @@ class App extends Component {
 
     if(venue) {
         fetch(`https://api.foursquare.com/v2/venues/${venue_id}?client_id=${foursquare_client_id}&client_secret=${foursquare_client_secret}&v=${foursquare_version}`, { signal })
-        //fetch(`https://api.foursquare.com/v2/venues/explore?ll=48.208418,16.373231&section=coffee&client_id=${foursquare_client_id}&client_secret=${foursquare_client_secret}&v=${foursquare_version}`, { signal })
         
         .then(response => response.json())
         .then(data => {
@@ -111,7 +104,7 @@ class App extends Component {
             this.setState({ error: abortError })
         }) ;
 
-        /*this.setState({
+        this.setState({
             selectedLocalVenue: selectedLocalVenue
         });
         
@@ -151,7 +144,11 @@ class App extends Component {
                 //retrieve the data: marker.get('store_id');
                 store_id: singleLocal.venue.id,
                 store_address: singleLocal.venue.location.address
+                
             })
+              
+                //https://developers.google.com/maps/documentation/javascript/examples/marker-animations
+                marker.addListener('click',this.clickLocalFromList);  
             
              //Push marker in the array that holds markers showing up on our map
              this.state.allMarkers.push(marker);
@@ -168,53 +165,34 @@ class App extends Component {
                 
             });
             
-            });
-        
-           
-
-
-         /*/Update markers on the map according search bar input
-        //https://developers.google.com/maps/documentation/javascript/examples/marker-remove         
-         let filterMarkers = (query) => {
-
-            let { map, allMarkers } = this.state;
-            let filteredMarkers;
-
-            // Set all markers on the map by default
-            allMarkers.map((singleMarker) =>{
-            return singleMarker.setMap(map);
-            })
-        
-        
-            // Removes the markers from the map, but keeps them in the array.       
-            if (query) {
-            //this.setState({ query: query });
-            const match = new RegExp(escapeRegExp(query), 'i')
-
-            filteredMarkers = allMarkers.filter((local) =>
-                //shownMarker.foursquareId == allMarkers.foursquareId;
-                match.test(local.name)
-                );
-                this.setState({filteredMarkers : filteredMarkers})
-            // Hide markers that are included in filteredMarkers array
-            filteredMarkers.map((filteredMarker) => {
-                return filteredMarker.setMap(null)
-            })    
-            return this.setState({ filteredMarkers: filteredMarkers })    
-            console.log(this.state.filteredMarkers);
-            } else {
-            // If there is no query, show all markers
-            this.setState({ query: '', filteredMarkers: allMarkers});
-
-            allMarkers.map((singleMarker) => {
-                return singleMarker.setMap(map)
-            })
-            }
-        }
-       */
+            }); 
     }
 
+     
     
+    //Added animation to marker
+    clickLocalFromList = (clickedLocal)=> {
+        this.setState({
+            selectedLokal: clickedLocal
+        });
+
+        this.state.allMarkers.map(marker => {
+            console.log('clickedLocal:' +clickedLocal)
+            if(marker.store_id ===clickedLocal) { 
+                if (marker.getAnimation() !== null) {
+                marker.setAnimation(null);
+              } else {
+                marker.setAnimation(window.google.maps.Animation.BOUNCE);
+                
+                setTimeout(function() {
+                    marker.setAnimation(null)
+                }, 2000);
+              }
+
+            }
+        })
+        
+    }
 
     render() {
         
@@ -224,11 +202,11 @@ class App extends Component {
             <SidebarContainer   //locals = {locals}
                                 //cafeLocals = {this.state.cafeLocals}
                                 select = {this.selectLocalVenue}
-                                selectedLocal = {this.state.selectedLocalVenue}
-                                error ={this.state.error}
-                                selectedLocalVenue = {this.state.selectLocalVenue}
+                                //selectedLocal = {this.state.selectedLocalVenue}
+                                //selectedLocalVenue = {this.state.selectLocalVenue}
                                 newLocals = {this.state.newLocals}
-                               
+                                clickLocalFromList = {this. clickLocalFromList}
+                                error ={this.state.error}
                                 />
             <div id='map' role='application'></div>
         </div>
