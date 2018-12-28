@@ -12,8 +12,8 @@ class SidebarContainer extends Component {
             this.state = {
                 query: '',
                 listOfLokalElements: '',
-                //newLocals:[],
-                ElementColorDefault : true
+                newLocals:'',
+               //ElementColorDefault : true
                 //shownMarkers: [],
                 //singleMarker: []
             };
@@ -21,50 +21,51 @@ class SidebarContainer extends Component {
         //const{localsVenues} = this.props;  
     }
 
-    changeSelectedElementColor(){
+     /*changeSelectedElementColor(){
         this.setState({ElementColorDefault : !this.state.ElementColorDefault})
     }
-    /*
-   listOfSelectedLocals = [];
+    
+   //listOfSelectedLocals = [];
    
     
-    updateQuery = (query) => {
+   updateQuery = (query) => {
         this.setState({query: query})
     }
-    */
+   */
 
     componentWillMount() {
+        
         this.setState({
-            newLocals : this.props.newLocals
+            newLocals : {locals}
+            //TODO: newLocals : this.props.newLocals doesn't show up in the state--> newLocals is an empty array
         })
         console.log('after ComponentWillMount the value of newLocals in state:' + this.state.newLocals)
+        
     }
-    
-    /*
-    clearQuery = () => {
-        this.setState({ query: '' })
-    }
-    */
-  
+     
+  //BUG
   filterLocals  = () => {
         //let listOfLokalElements =[];
-        //console.log(document.getElementById('search_box').value);
+        console.log(document.getElementById('search_box').value);
         //console.log('this.state.query értéke:' + this.state.query);
         let userValue = document.getElementById('search_box').value;
         var new_locals = [];
-
-        //TODO: in the endversion change "locals" to "this.props.newLocals" and change the code in render()
-        this.props.newLocals.forEach(function(local) {
+         //update name in case of newLocals: this.props.newLocals
+       this.state.newLocals.locals.forEach(function(local) {
             //console.log('megadott érték:'+userValue);
             //console.log('keresett érték:'+local.name);
-            if (local.venue.location.name === userValue){
+            if (local.name.toLowerCase() === userValue.toLowerCase()){
+                //update name in case of newLocals: this.props.newLocals
                new_locals.push(local);
                console.log('volltreffer');
+            }
+            else {
+                console.log('There is no cafe')
             }
         });
         this.setState({ newLocals : new_locals});
         
-        console.log('value of newLocals:' + this.state.newLocals);
+        console.log('value of newLocals:' + this.state.newLocals.name);
 
         /*this.setState({query: userValue});
     //this.props.locals.forEach(function (LokalElement) { 
@@ -102,7 +103,7 @@ class SidebarContainer extends Component {
             //query : query
         });
         */
-    }
+   }
      
 
    
@@ -115,13 +116,13 @@ class SidebarContainer extends Component {
         if (this.state.query) {
             const match = new RegExp(escapeRegExp(this.state.query), 'i');
             console.log('value of current query: ' + this.state.query)
-            showingListOfLocals = this.props.localsVenues.filter((local) => 
+            showingListOfLocals = this.state.newLocals.filter((local) => 
                 match.test(local.name));               
             } else {
-                showingListOfLocals = this.props.localsVenues;
+                showingListOfLocals = locals;
             };
         //Passing showingListOfLocals array to App.js
-        */
+       */
         //let li_class = this.state.ElementColorDefault ? ".Sidebar-list li" : ".Sidebar-list li_selected";
        
 
@@ -175,7 +176,7 @@ class SidebarContainer extends Component {
                         //value={this.state.query} 
                         onChange={ this.filterLocals}  
                         //onChange={event => this.updateQuery(event.target.value) }   
-                        placeholder="Search café..." 
+                        placeholder="Search fo café by name..." 
                     />
                     <button
                         className="list-button"
