@@ -5,7 +5,7 @@ import logo from './logo.svg';
 const Header = () => {
     return (
         <div className = "Header">
-            <p>Neighbourhood Map</p>
+            <h1>Neighbourhood Map</h1>
             <p className = "Header-info">made by
             <a
                 className="App-link"

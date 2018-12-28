@@ -167,7 +167,7 @@ class SidebarContainer extends Component {
 
         return (
             
-            <aside className ="sidebarContainer" >
+            <aside tabIndex='0' className ="sidebarContainer" >
                 <form className="form">
                     <input 
                         className="input-field" 
@@ -176,7 +176,8 @@ class SidebarContainer extends Component {
                         //value={this.state.query} 
                         onChange={ this.filterLocals}  
                         //onChange={event => this.updateQuery(event.target.value) }   
-                        placeholder="Search fo café by name..." 
+                        placeholder="Search fo café by name..."
+                        aria-labelledby="filter cafés by name"
                     />
                     <button
                         className="list-button"
@@ -194,13 +195,13 @@ class SidebarContainer extends Component {
                                 className= "li"
                                 //onClick={() => this.props.handleClick(singleLocal.venue.id)}
                                 >
-                                <p><strong>{singleLocal.venue.name}</strong></p>
-                                <p>{singleLocal.venue.location.address}</p>
-                                <p>{singleLocal.venue.location.formattedAddress[1]}</p>
-                                <p>GPS Data:</p> 
-                                <p>lat:{singleLocal.venue.location.labeledLatLngs[0].lat}, lng:{singleLocal.venue.location.labeledLatLngs[0].lng}</p>
-                                    <p/>
-                                    {this.props.error}
+                                <h2><span aria-labelledby="location name"><strong>{singleLocal.venue.name}</strong></span></h2>
+                                <p><span aria-labelledby="location address">{singleLocal.venue.location.address}</span></p>
+                                <p><span aria-labelledby="location p.box">{singleLocal.venue.location.formattedAddress[1]}</span></p>
+                                <p><span aria-labelledby="GPS coordinates">GPS coordinates:</span></p> 
+                                <p><span aria-labelledby="lat">lat:{singleLocal.venue.location.labeledLatLngs[0].lat}</span>, <span aria-labelledby="lng">lng:{singleLocal.venue.location.labeledLatLngs[0].lng}</span></p>
+                                
+                                {this.props.error}
                                 </li>
                                 ))}
                             </ul>

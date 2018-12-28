@@ -229,7 +229,7 @@ class App extends Component {
                                 newLocals = {this.state.newLocals}
                                
                                 />
-            <div id='map'></div>
+            <div id='map' role='application'></div>
         </div>
         )
     }
