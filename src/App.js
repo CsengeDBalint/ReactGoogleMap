@@ -27,7 +27,7 @@ class App extends Component {
 
     componentDidMount = () => {
         //fetch(`https://api.foursquare.com/v2/venues/4b058890f964a520afcd22e3?client_id=FTPQMQKRBNIJJDPKNGWFMUHD3KBP1OIYX0YZ5BU250CILCD&client_secret=EZ3ACLWE1RBXRJSHLQCE0RU4DIYJTQB1SOEVVIK10OFKCR1F&v=20181108`)
-        fetch(`https://api.foursquare.com/v2/venues/explore?ll=48.208418,16.373231&query=cafe&client_id=FTPQMQKRBNIJJDPKNGWFMUHD3KBP1OIYX0YZ5BU250CILCD4&client_secret=EZ3ACLWE1RBXRJSHLQCE0RU4DIYJTQB1SOEVVIK10OFKCR1F&v=20181108`)
+        fetch(`https://api.foursquare.com/v2/venues/explore?ll=48.208418,16.373231&query=cafe&limit=10&client_id=FTPQMQKRBNIJJDPKNGWFMUHD3KBP1OIYX0YZ5BU250CILCD4&client_secret=EZ3ACLWE1RBXRJSHLQCE0RU4DIYJTQB1SOEVVIK10OFKCR1F&v=20181108`)
             
             .then(response => response.json())
             .then(data => {
@@ -226,7 +226,7 @@ class App extends Component {
                                 selectedLocal = {this.state.selectedLocalVenue}
                                 error ={this.state.error}
                                 selectedLocalVenue = {this.state.selectLocalVenue}
-                                newLocals = {this.state.localsVenues}
+                                newLocals = {this.state.newLocals}
                                
                                 />
             <div id='map'></div>
