@@ -16,6 +16,8 @@ class App extends Component {
       selectedLocalVenue: [],
       localsVenues:[],
       newLocals: [],
+      filteredLocals: '',
+      venues: [],
       //cafeLocals:[],
       error: null
         };
@@ -193,6 +195,39 @@ class App extends Component {
         })
         
     }
+    
+//BUG
+filterLocals  = () => {
+    //let listOfLokalElements =[];
+    console.log(document.getElementById('search_box').value);
+    //console.log('this.state.query értéke:' + this.state.query);
+    let userValue = document.getElementById('search_box').value;
+    var new_locals = [];
+     //update name in case of newLocals: this.props.newLocals
+   this.state.newLocals.forEach (function (local) {
+        //console.log('megadott érték:'+userValue);
+        console.log('keresett érték:'+local.venue.location.name);
+        if ( userValue.toLowerCase() === local.venue.location.name.toLowerCase()){
+            //update name in case of newLocals: this.props.newLocals
+           new_locals.push(local);
+           console.log('volltreffer'); 
+           
+        }
+
+        
+    });
+    console.log('value of newLocals:' + this.state.newLocals.name);
+    this.setState({ filteredLocals : new_locals});
+}
+
+/*filterLocals = () =>{
+    let userValue = document.getElementById('search_box').value;
+    let venues = this.state.newLocals.filter((searchVenue) =>
+            
+        new RegExp(userValue, "i").exec(searchVenue.venue.name));
+    this.setState({ newLocals : venues});
+    //console.log(searchVenue.venue.name)
+}*/
 
     render() {
         
@@ -204,9 +239,12 @@ class App extends Component {
                                 select = {this.selectLocalVenue}
                                 //selectedLocal = {this.state.selectedLocalVenue}
                                 //selectedLocalVenue = {this.state.selectLocalVenue}
-                                newLocals = {this.state.newLocals}
-                                clickLocalFromList = {this. clickLocalFromList}
+                                filteredLocals = {this.state.filteredLocals}
+                                clickLocalFromList = {this.clickLocalFromList}
                                 error ={this.state.error}
+                                filterLocals = {this.filterLocals}
+                                venues = {this.state.venues}
+                                newLocals= {this.state.newLocals}
                                 />
             <div id='map' role='application'></div>
         </div>

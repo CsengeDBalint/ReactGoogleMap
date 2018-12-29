@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import escapeRegExp from 'escape-string-regexp';
+//import escapeRegExp from 'escape-string-regexp';
 
 import './SidebarContainer.css';
-import {locals} from './localsList.js';
+//import {locals} from './localsList.js';
 //import ListItemDetails from './ListItemDetails';
 
 class SidebarContainer extends Component {
@@ -13,6 +13,7 @@ class SidebarContainer extends Component {
                 query: '',
                 listOfLokalElements: '',
                 newLocals:'',
+                filteredLocals:''
                //ElementColorDefault : true
                 //shownMarkers: [],
                 //singleMarker: []
@@ -29,19 +30,19 @@ class SidebarContainer extends Component {
    updateQuery = (query) => {
         this.setState({query: query})
     }
-   */
-
+   
+*/
     componentWillMount() {
         
         this.setState({
-            newLocals : {locals}
-            //TODO: newLocals : this.props.newLocals doesn't show up in the state--> newLocals is an empty array
+            filteredLocals : this.props.newLocals
+            
         })
         console.log('after ComponentWillMount the value of newLocals in state:' + this.state.newLocals)
         
     }
      
-  //BUG
+  /*/BUG
   filterLocals  = () => {
         //let listOfLokalElements =[];
         console.log(document.getElementById('search_box').value);
@@ -49,7 +50,7 @@ class SidebarContainer extends Component {
         let userValue = document.getElementById('search_box').value;
         var new_locals = [];
          //update name in case of newLocals: this.props.newLocals
-       this.state.newLocals.locals.forEach(function(local) {
+       this.state.newLocals.forEach = local=> {
             //console.log('megadott érték:'+userValue);
             //console.log('keresett érték:'+local.name);
             if (local.name.toLowerCase() === userValue.toLowerCase()){
@@ -60,11 +61,11 @@ class SidebarContainer extends Component {
             else {
                 console.log('There is no cafe')
             }
-        });
+        };
         this.setState({ newLocals : new_locals});
         
         console.log('value of newLocals:' + this.state.newLocals.name);
-
+*/
         /*this.setState({query: userValue});
     //this.props.locals.forEach(function (LokalElement) { 
         let listOfLokalElements = [];
@@ -100,14 +101,14 @@ class SidebarContainer extends Component {
             listOfLokalElements: listOfLokalElements,
             //query : query
         });
-        */
+       
    }
-     
+     */ 
 
    
     render() {
        
-        
+        console.log('this.state.filteredLocals: ' + this.state.filteredLocals.venue);
 
         /*/console.log('Props', this.props)
         let showingListOfLocals;
@@ -172,7 +173,7 @@ class SidebarContainer extends Component {
                         type="text" 
                         id="search_box"
                         //value={this.state.query} 
-                        onChange={ this.filterLocals}  
+                        onChange={ this.props.filterLocals}  
                         //onChange={event => this.updateQuery(event.target.value) }   
                         placeholder="Search fo café by name..."
                         aria-labelledby="filter cafés by name"
@@ -186,8 +187,8 @@ class SidebarContainer extends Component {
                 </form>     
                     {(//https://stackoverflow.com/questions/46424537/reactjs-error-objects-are-not-valid-as-a-react-child
                         //BUG: TypeError: Cannot read property 'map' of undefined
-                        <ul className ="Sidebar-list">
-                            {this.props.newLocals.map((singleLocal) => (
+                        <ul className ="sidebar-list">
+                            {this.state.filteredLocals.map((singleLocal) => (
                                 <li
                                 key={singleLocal.venue.id}
                                 className= "li"
@@ -198,7 +199,7 @@ class SidebarContainer extends Component {
                                 <p><span aria-labelledby="location p.box">{singleLocal.venue.location.formattedAddress[1]}</span></p>
                                 <p><span aria-labelledby="GPS coordinates">GPS coordinates:</span></p> 
                                 <p><span aria-labelledby="lat">lat:{singleLocal.venue.location.labeledLatLngs[0].lat}</span>, <span aria-labelledby="lng">lng:{singleLocal.venue.location.labeledLatLngs[0].lng}</span></p>
-                                
+                                <p />
                                 {this.props.error}
                                 </li>
                                 ))}
