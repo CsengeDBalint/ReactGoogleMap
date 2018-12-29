@@ -172,21 +172,17 @@ class SidebarContainer extends Component {
                         className="input-field" 
                         type="text" 
                         id="search_box"
-                        //value={this.state.query} 
-                        onChange={ this.props.filterLocals}  
-                        //onChange={event => this.updateQuery(event.target.value) }   
-                        placeholder="Search fo café by name..."
+                        onChange={ this.props.filterLocals}    
+                        placeholder="Search for a café by name..."
                         aria-labelledby="filter cafés by name"
                     />
                     <button
                         className="list-button"
-                        //onClick={}
                     >
                     List
                     </button>
                 </form>     
-                    {(//https://stackoverflow.com/questions/46424537/reactjs-error-objects-are-not-valid-as-a-react-child
-                        //BUG: TypeError: Cannot read property 'map' of undefined
+                    {(               
                         <ul className ="sidebar-list">
                             {this.props.venues.map((singleLocal) => (
                                 <li

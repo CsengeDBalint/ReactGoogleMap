@@ -19,13 +19,9 @@ class App extends Component {
       newLocals: [],
       filteredLocals: '',
       venues: [],
-      //cafeLocals:[],
       error: null
-        };
-        
-        //this.initMap = this.initMap.bind(this);
-        
-
+    };
+     
     }
 
     componentDidMount = () => {
@@ -44,14 +40,13 @@ class App extends Component {
 
                     console.log(data.response.groups[0].items);
                     //console.log('localsVenues in state:' + JSON.stringify(this.state.localsVenues));
-                    console.log(' newLocals state értéke:'+  this.state.newLocals[3].venue.name);
+                    //console.log(' newLocals state értéke:'+  this.state.newLocals[3].venue.name);
                 })
             .catch(error => {
                 console.log("Error : " + error);
                 alert("An error occured while fetching data by Foursquare Api" + error);
         }) ;
-    
-    
+
     }
 
     
@@ -140,7 +135,6 @@ class App extends Component {
             var marker = new window.google.maps.Marker({
                 position: {lat: singleLocal.venue.location.lat, lng: singleLocal.venue.location.lng},
                 map: map,
-                //map: window.mapObject;
                 title: singleLocal.venue.name,
                 //Custom Attribute
                 //https://stackoverflow.com/questions/2564320/adding-ids-to-google-map-markers
@@ -149,23 +143,24 @@ class App extends Component {
                 store_address: singleLocal.venue.location.address
                 
             })
-              
-                //https://developers.google.com/maps/documentation/javascript/examples/marker-animations
-                marker.addListener('click',this.clickLocalFromList);  
-            
-             //Push marker in the array that holds markers showing up on our map
-             this.state.allMarkers.push(marker);
+             
+            //Add eventlistener when clicked by a listelement
+            //https://developers.google.com/maps/documentation/javascript/examples/marker-animations
+            marker.addListener('click',this.clickLocalFromList);  
+        
+            //Push marker in the array that holds all "default" markers showing up on our map
+            this.state.allMarkers.push(marker);
 
-             this.setState({allMarkers:allMarkers});
-            
-            
-            
+            this.setState({allMarkers:allMarkers});
+        
+            //Define infowindow's content
             let content = `<div><h2>${marker.title}</h2><p><strong>Address:</strong>${marker.store_address}</p></p></div>`; 
+            
             //Open infowindow 
             marker.addListener('click',() => {
                 infowindow.setContent (content);
                 infowindow.open(map, marker);
-                
+            
             });
             
             }); 
@@ -173,12 +168,14 @@ class App extends Component {
 
      
     
-    //Added animation to marker
+    //Add animation to marker selected by a listelement
     clickLocalFromList = (clickedLocal)=> {
         this.setState({
             selectedLokal: clickedLocal
         });
 
+        //If found the markers belonged the clicked listelement start BÍOUNCE animation 
+        //if the marker is not already animated
         this.state.allMarkers.map(marker => {
             console.log('clickedLocal:' +clickedLocal)
             if(marker.store_id ===clickedLocal) { 
@@ -187,6 +184,7 @@ class App extends Component {
               } else {
                 marker.setAnimation(window.google.maps.Animation.BOUNCE);
                 
+                //
                 setTimeout(function() {
                     marker.setAnimation(null)
                 }, 2000);
@@ -196,42 +194,25 @@ class App extends Component {
         })
         
     }
-    
-/*/BUG
-filterLocals  = () => {
-    //let listOfLokalElements =[];
-    console.log(document.getElementById('search_box').value);
-    //console.log('this.state.query értéke:' + this.state.query);
-    let userValue = document.getElementById('search_box').value;
-    var new_locals = [];
-     //update name in case of newLocals: this.props.newLocals
-   this.state.newLocals.forEach (function (local) {
-        //console.log('megadott érték:'+userValue);
-        console.log('keresett érték:'+local.venue.location.name);
-        if ( userValue.toLowerCase() === local.venue.location.name.toLowerCase()){
-            //update name in case of newLocals: this.props.newLocals
-           new_locals.push(local);
-           console.log('volltreffer'); 
-           
-        }
 
-        
-    });
-    console.log('value of newLocals:' + this.state.newLocals.name);
-    this.setState({ filteredLocals : new_locals});
-}
-*/
+//Filter locations through search form
 filterLocals = () =>{
+    let { allMarkers } = this.state;
+
     let userValue = document.getElementById('search_box').value;
+    
     let venues = this.state.newLocals.filter((searchVenue) =>   
         //new RegExp(userValue, "i").exec(searchVenue.venue.name));
         searchVenue.venue.name.toLowerCase().includes(userValue.toLowerCase()));
 
     this.setState({ localsVenues : venues});
+   
+    this.setState({ allMarkers : venues});
+    console.log('allMarkers state: ' + this.state.allMarkers);
+    
     this.initMap();
     
-    /*this.setState({ allMarkers : venues});
-    //version1.
+    /*//version1.
     this.state.allMarkers.forEach(function (marker){
         (marker.title.toLowerCase() != venues.name.toLowerCase()) && marker.setMap(null)
     });
@@ -258,8 +239,7 @@ filterLocals = () =>{
         return (
         <div>
             <Header />
-            <SidebarContainer   //locals = {locals}
-                                //cafeLocals = {this.state.cafeLocals}
+            <SidebarContainer   
                                 select = {this.selectLocalVenue}
                                 //selectedLocal = {this.state.selectedLocalVenue}
                                 //selectedLocalVenue = {this.state.selectLocalVenue}
