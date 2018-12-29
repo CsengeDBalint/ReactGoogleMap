@@ -188,7 +188,7 @@ class SidebarContainer extends Component {
                     {(//https://stackoverflow.com/questions/46424537/reactjs-error-objects-are-not-valid-as-a-react-child
                         //BUG: TypeError: Cannot read property 'map' of undefined
                         <ul className ="sidebar-list">
-                            {this.state.filteredLocals.map((singleLocal) => (
+                            {this.props.venues.map((singleLocal) => (
                                 <li
                                 key={singleLocal.venue.id}
                                 className= "li"
