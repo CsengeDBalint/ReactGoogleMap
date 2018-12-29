@@ -12,6 +12,7 @@ class App extends Component {
     super(props);
     this.state = {
       allMarkers: [],
+      selectedMarkers: [],
       infoWindows : [],
       selectedLocalVenue: [],
       localsVenues:[],
@@ -223,14 +224,37 @@ filterLocals  = () => {
 filterLocals = () =>{
     let userValue = document.getElementById('search_box').value;
     let venues = this.state.newLocals.filter((searchVenue) =>   
-        new RegExp(userValue, "i").exec(searchVenue.venue.name));
+        //new RegExp(userValue, "i").exec(searchVenue.venue.name));
+        searchVenue.venue.name.toLowerCase().includes(userValue.toLowerCase()));
 
     this.setState({ localsVenues : venues});
-    this.setState({ allMarkers : venues});
+    this.initMap();
+    
+    /*this.setState({ allMarkers : venues});
+    //version1.
+    this.state.allMarkers.forEach(function (marker){
+        (marker.title.toLowerCase() != venues.name.toLowerCase()) && marker.setMap(null)
+    });
+    */
+    /*//version2.
+    //https://stackoverflow.com/questions/22157001/update-reload-markers-without-reloading-google-map
+    //https://stackoverflow.com/questions/51845400/updating-react-google-markers-through-search-filter
+    let selectedMarkers = this.state.allMarkers.filter((someMarker) => {
+        someMarker.venue.name.toLowerCase().includes(userValue.toLowerCase());
+
+        this.setState({selectedMarkers: selectedMarkers});
+
+        this.state.selectedMarkers.forEach(selectedMarker => {
+            selectedMarker.setMap(null);
+       
+        });
+      
+    });
+    */
 }
 
+
     render() {
-        
         return (
         <div>
             <Header />
