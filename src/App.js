@@ -19,7 +19,9 @@ class App extends Component {
       newLocals: [],
       filteredLocals: '',
       venues: [],
-      error: null
+      error: null,
+      selectedLokal: '',
+      clickedLocal: ''
     };
      
     }
@@ -170,14 +172,14 @@ class App extends Component {
     
     //Add animation to marker selected by a listelement
     clickLocalFromList = (clickedLocal)=> {
-        this.setState({
-            selectedLokal: clickedLocal
-        });
+        //this.setState({
+        //    selectedLokal: clickedLocal
+        //});
 
         //If found the markers belonged the clicked listelement start BÍOUNCE animation 
         //if the marker is not already animated
         this.state.allMarkers.map(marker => {
-            console.log('clickedLocal:' +clickedLocal)
+            //console.log('clickedLocal:' +clickedLocal)
             if(marker.store_id ===clickedLocal) { 
                 if (marker.getAnimation() !== null) {
                 marker.setAnimation(null);
@@ -194,30 +196,44 @@ class App extends Component {
         })
         
     }
-
+    
 //Filter locations through search form
 filterLocals = () =>{
-    let { allMarkers } = this.state;
+    console.log('allMarkers state: ' + this.state.allMarkers);
+   
+    //console.log('venues.venue.categories.id: '+ venues.venue.categories.id);
 
     let userValue = document.getElementById('search_box').value;
     
     let venues = this.state.newLocals.filter((searchVenue) =>   
         //new RegExp(userValue, "i").exec(searchVenue.venue.name));
         searchVenue.venue.name.toLowerCase().includes(userValue.toLowerCase()));
-
+    
     this.setState({ localsVenues : venues});
    
-    this.setState({ allMarkers : venues});
+    //console.log('allMarkers[0].store_id:'+this.state.allMarkers[0].store_id);
+    //console.log('venues[0].venue.id:'+venues[0].venue.id); 
+   
+   //Keep synchron the shown markers on map with the shown list
+    const currentMarkers = () => {
+        for (let i = 0; i < venues.length; i++) {
+        if (venues[i].venue.id != this.allMarkers.store_id){
+            this.marker.setVisible(false);   
+        }
+    }}     
+    
+    //this.setState({ allMarkers : venues});
+    this.setState({ allMarkers: currentMarkers})
     console.log('allMarkers state: ' + this.state.allMarkers);
+    this.initMap()
+    ;
     
-    this.initMap();
-    
-    /*//version1.
+    /*//version2: doesn't work
     this.state.allMarkers.forEach(function (marker){
         (marker.title.toLowerCase() != venues.name.toLowerCase()) && marker.setMap(null)
     });
     */
-    /*//version2.
+    /*//version3: doesn't work
     //https://stackoverflow.com/questions/22157001/update-reload-markers-without-reloading-google-map
     //https://stackoverflow.com/questions/51845400/updating-react-google-markers-through-search-filter
     let selectedMarkers = this.state.allMarkers.filter((someMarker) => {
