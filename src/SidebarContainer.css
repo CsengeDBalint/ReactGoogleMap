@@ -12,17 +12,18 @@
     display:flex;
     flex-direction: column;
     font-family: Arial, Helvetica, sans-serif;
+    overflow: hidden;
 
  }
 
 .sidebar-list {
     list-style: none;
-    font-size: 1em;
+    font-size: 0.75em;
     padding-left: 0;
     max-height: 100vw;
 }
 .sidebar-list li{
-     display: block;
+     display: relative;
      height: auto;
      padding: 1em;
      box-shadow: 1px 1px 2px 1px rgba(128, 128, 128, 0.2);

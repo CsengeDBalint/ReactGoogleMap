@@ -181,7 +181,7 @@ class SidebarContainer extends Component {
                                 className= "li"
                                 onClick={() => this.props.clickLocalFromList(singleLocal.venue.id)}
                                 >
-                                <h2><span aria-labelledby="location name"><strong>{singleLocal.venue.name}</strong></span></h2>
+                                <h3><span aria-labelledby="location name"><strong>{singleLocal.venue.name}</strong></span></h3>
                                 <p><span aria-labelledby="location address">{singleLocal.venue.location.address}</span></p>
             
                                 
