@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import './App.css';
 //import escapeRegExp from 'escape-string-regexp';
 
-import Header from './Header';
-import SidebarContainer from './SidebarContainer';
-import Footer from './Footer';
-//import {locals} from './localsList.js';
+import Header from './components/Header';
+import SidebarContainer from './components/SidebarContainer';
+import Footer from './components/Footer';
 
 class App extends Component {
 
@@ -50,60 +49,6 @@ class App extends Component {
                 //alert("An error occured while fetching data by Foursquare Api" + error);
         }) ;
     }
-
-    
-
-    /*/ Fetch data for single Local by marker with Foursquare Api
-    selectLocalVenue = venue =>{
-        const foursquare_client_id = "FTPQMQKRBNIJJDPKNGWFMUHD3KBP1OIYX0YZ5BU250CILCD4";
-        const foursquare_client_secret = "EZ3ACLWE1RBXRJSHLQCE0RU4DIYJTQB1SOEVVIK10OFKCR1F";
-        const foursquare_version = 20181108;
-
-        const venue_id = '4b1a96a5f964a520ebec23e3';
-        
-
-        this.setState({
-            markerDataError: null
-        });
-        //TODO: improve error handling See: The Road to learn React page 110
-
-
-
-    if(venue) {
-        fetch(`https://api.foursquare.com/v2/venues/${venue_id}?client_id=${foursquare_client_id}&client_secret=${foursquare_client_secret}&v=${foursquare_version}`)
-        
-        .then(response => response.json())
-        .then(data => {            
-            if (data.meta.code === 200) {
-                console.log('MarkerData is loading...');
-                this.setState({selectedLocalVenue: data.response.venue})
-            } else {
-                console.log('Problem during loading MarkerData:' + data.meta.errorType + data.meta.errorDetail)
-                console.log('data.response.venue:' + this.state.selectLocalVenue)
-                this.setState({markerDataError: data.meta.errorType})   
-            }
-            })
-        .catch(markerError => {
-                if (markerError.name === 'AbortError') {
-                    console.error('Fetch aborted');
-                    this.setState({markerDataError: markerError.name})  
-                } else {
-                    console.error('Another error', markerError)
-                }
-            this.setState({ markerDataError: markerError })
-        }) ;
-
-        this.setState({
-            selectedLocalVenue: this.state.selectedLocalVenue
-        });
-        
-        console.log('selectedLocalVenue:' + this.state.selectedLocalVenue);
-        console.log('errors value: '+ this.state.markerDataError)
-
-
-    }
-    };
-    */
 
    //Initialize and add the map
    initMap = () => {
@@ -170,7 +115,7 @@ class App extends Component {
         //    selectedLokal: clickedLocal
         //});
 
-        //If found the markers belonged the clicked listelement start BÍOUNCE animation 
+        //If found the markers belonged the clicked listelement start BOUNCE animation 
         //if the marker is not already animated
         this.state.allMarkers.forEach(marker => {
             //console.log('clickedLocal:' +clickedLocal)
@@ -193,9 +138,7 @@ class App extends Component {
     
     //Filter locations through search form
     filterLocals = () =>{
-        console.log('allMarkers state: ' + this.state.allMarkers);
-    
-        //console.log('venues.venue.categories.id: '+ venues.venue.categories.id);
+        //console.log('allMarkers state: ' + this.state.allMarkers);
 
         let userValue = document.getElementById('search_box').value;
         
