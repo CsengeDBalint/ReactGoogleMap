@@ -164,10 +164,10 @@ class SidebarContainer extends Component {
                     />
                     
                     <button
-                        className="list-button"
+                        className="btn-toggle"
                         onClick= {() =>this.toggleList()}
                     >
-                    Suggestion List
+                    Hide or Show Suggestion List
                     </button>
                     {this.props.error && 
                         <div className="error"><span aria-labelledby="error message"><strong>An error occured:</strong>{this.props.error}</span></div>}

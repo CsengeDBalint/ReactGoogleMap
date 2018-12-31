@@ -4,28 +4,9 @@ import logo from './logo.svg';
 
 const Header = () => {
     return (
-        <div className = "Header">
+        <div className = "header">
             <h1>Neighbourhood Map</h1>
-            <p className = "Header-info">made by
-            <a
-                className="App-link"
-                href="https://developers.google.com/maps/documentation/javascript/tutorial"
-                target="_blank"
-                rel="noopener noreferrer"
-            > Google Maps Api, </a>
-            <a
-                className="App-link"
-                href="https://developer.foursquare.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-            > Foursquare Api</a>
-            <a
-                className="App-link"
-                href="https://reactjs.org"
-                target="_blank"
-                rel="noopener noreferrer"
-            > and <img src={logo} className = "App-logo"alt="React logo" />React</a>
-            </p>
+            
         </div>
     )
 }

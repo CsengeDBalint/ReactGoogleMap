@@ -4,6 +4,7 @@ import './App.css';
 
 import Header from './Header';
 import SidebarContainer from './SidebarContainer';
+import Footer from './Footer';
 //import {locals} from './localsList.js';
 
 class App extends Component {
@@ -255,6 +256,7 @@ class App extends Component {
                                 toggleList =  {this.toggleList}
                                 />
             <div id='map' role='application'></div>
+            <Footer />
         </div>
         )
     }
