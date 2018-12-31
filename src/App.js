@@ -165,7 +165,7 @@ class App extends Component {
 
         //If found the markers belonged the clicked listelement start BÍOUNCE animation 
         //if the marker is not already animated
-        this.state.allMarkers.map(marker => {
+        this.state.allMarkers.forEach(marker => {
             //console.log('clickedLocal:' +clickedLocal)
             if(marker.store_id ===clickedLocal) { 
                 if (marker.getAnimation() !== null) {

@@ -19,7 +19,7 @@
      box-shadow: 1px 1px 2px 1px rgba(128, 128, 128, 0.2);
      background-color: white;
    }
-.sidebar-list li: hover {
+.sidebar-list li:hover {
     background-color: grey;
     opacity: 0.5;
     text-decoration: underline;
