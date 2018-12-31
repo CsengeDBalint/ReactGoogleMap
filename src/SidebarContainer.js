@@ -183,10 +183,7 @@ class SidebarContainer extends Component {
                                 >
                                 <h2><span aria-labelledby="location name"><strong>{singleLocal.venue.name}</strong></span></h2>
                                 <p><span aria-labelledby="location address">{singleLocal.venue.location.address}</span></p>
-                                <p><span aria-labelledby="location p.box">{singleLocal.venue.location.formattedAddress[1]}</span></p>
-                                <p><span aria-labelledby="GPS coordinates">GPS coordinates:</span></p> 
-                                <p><span aria-labelledby="lat">lat:{singleLocal.venue.location.labeledLatLngs[0].lat}</span>, <span aria-labelledby="lng">lng:{singleLocal.venue.location.labeledLatLngs[0].lng}</span></p>
-                                <p />
+            
                                 
                                 </li>
                                 ))}

@@ -130,7 +130,9 @@ class App extends Component {
                 //https://stackoverflow.com/questions/2564320/adding-ids-to-google-map-markers
                 //retrieve the data: marker.get('store_id');
                 store_id: singleLocal.venue.id,
-                store_address: singleLocal.venue.location.address
+                store_address: singleLocal.venue.location.address,
+                store_lat: singleLocal.venue.location.labeledLatLngs[0].lat,
+                store_lng: singleLocal.venue.location.labeledLatLngs[0].lng
                 
             })
              
@@ -144,7 +146,11 @@ class App extends Component {
             this.setState({allMarkers:allMarkers});
         
             //Define infowindow's content
-            let content = `<div><h2>${marker.title}</h2><p><strong>Address:</strong>${marker.store_address}${this.state.markerDataError}</p></div>`; 
+            let content = `<div><h2>${marker.title}</h2>
+                            <p><strong>Address:</strong>${marker.store_address}</p>
+                            <p>GPS coordinates: </p>
+                            <p>lat:${marker.store_lat}, lng:${marker.store_lat}</p>
+                            </div>`; 
             
             //Open infowindow 
             marker.addListener('click',() => {
