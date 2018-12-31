@@ -20,6 +20,7 @@ class App extends Component {
       filteredLocals: '',
       venues: [],
       error: null,
+      //markerDataError: ''
       //selectedLokal: '',
       //clickedLocal: '',    
     }}
@@ -27,7 +28,6 @@ class App extends Component {
     componentDidMount = () => {
         //fetch(`https://api.foursquare.com/v2/venues/4b058890f964a520afcd22e3?client_id=FTPQMQKRBNIJJDPKNGWFMUHD3KBP1OIYX0YZ5BU250CILCD&client_secret=EZ3ACLWE1RBXRJSHLQCE0RU4DIYJTQB1SOEVVIK10OFKCR1F&v=20181108`)
         fetch(`https://api.foursquare.com/v2/venues/explore?ll=48.208418,16.373231&query=cafe&limit=10&client_id=FTPQMQKRBNIJJDPKNGWFMUHD3KBP1OIYX0YZ5BU250CILCD4&client_secret=EZ3ACLWE1RBXRJSHLQCE0RU4DIYJTQB1SOEVVIK10OFKCR1F&v=20181108`)
-        //fetch(`'https://hn.algolia.com/api/v1`)
             .then(response => response.json())
             .then(data => {
                     this.setState({
@@ -52,69 +52,57 @@ class App extends Component {
 
     
 
-    /*/ Fetch data with Foursquare Api
+    /*/ Fetch data for single Local by marker with Foursquare Api
     selectLocalVenue = venue =>{
         const foursquare_client_id = "FTPQMQKRBNIJJDPKNGWFMUHD3KBP1OIYX0YZ5BU250CILCD4";
         const foursquare_client_secret = "EZ3ACLWE1RBXRJSHLQCE0RU4DIYJTQB1SOEVVIK10OFKCR1F";
         const foursquare_version = 20181108;
 
-        const venue_id = locals[0]['foursquareId'];
+        const venue_id = '4b1a96a5f964a520ebec23e3';
         
-        //https://foursquare.com/developers/explore#req=venues%2F49eeaf08f964a52078681fe3%3F
-        //(`https://api.foursquare.com/v2/venues/${this.state.locals.foursquareId}&client_id=${foursquare_client_id}&client_secret=${foursquare_client_secret}&v=${foursquare_version}`)
-        //(`https://api.foursquare.com/v2/venues/explore?ll=48.208418,16.373231&client_id=${foursquare_client_id}&client_secret=${foursquare_client_secret}&v=${foursquare_version}`)
-        
-        const controller = new AbortController();
-        const signal = controller.signal;
 
         this.setState({
-            //selectedLocalVenue: venue,
-            error: null
+            markerDataError: null
         });
-        //TODO: output the venue details in the ListItemDetails
         //TODO: improve error handling See: The Road to learn React page 110
 
 
 
     if(venue) {
-        fetch(`https://api.foursquare.com/v2/venues/${venue_id}?client_id=${foursquare_client_id}&client_secret=${foursquare_client_secret}&v=${foursquare_version}`, { signal })
+        fetch(`https://api.foursquare.com/v2/venues/${venue_id}?client_id=${foursquare_client_id}&client_secret=${foursquare_client_secret}&v=${foursquare_version}`)
         
         .then(response => response.json())
-        .then(data => {
-            //https://flaviocopes.com/fetch-api/#
-            setTimeout(() => controller.abort(), 5 * 1000)
-            
+        .then(data => {            
             if (data.meta.code === 200) {
-                console.log('Data is loading...');
-                this.setState({selectedLocalVenue: data.response.venue.contact})
+                console.log('MarkerData is loading...');
+                this.setState({selectedLocalVenue: data.response.venue})
             } else {
-                console.log('Problem during loading data:' + data.meta.errorType + data.meta.errorDetail)
-                console.log('current venue_id:' + {venue_id})
-                this.setState({error: data.meta.errorType})   
+                console.log('Problem during loading MarkerData:' + data.meta.errorType + data.meta.errorDetail)
+                console.log('data.response.venue:' + this.state.selectLocalVenue)
+                this.setState({markerDataError: data.meta.errorType})   
             }
             })
-        .catch(abortError => {
-                if (abortError.name === 'AbortError') {
+        .catch(markerError => {
+                if (markerError.name === 'AbortError') {
                     console.error('Fetch aborted');
-                    this.setState({error: abortError.name})  
+                    this.setState({markerDataError: markerError.name})  
                 } else {
-                    console.error('Another error', abortError)
+                    console.error('Another error', markerError)
                 }
-            this.setState({ error: abortError })
+            this.setState({ markerDataError: markerError })
         }) ;
 
         this.setState({
-            selectedLocalVenue: selectedLocalVenue
+            selectedLocalVenue: this.state.selectedLocalVenue
         });
         
         console.log('selectedLocalVenue:' + this.state.selectedLocalVenue);
-        console.log('errors value: '+ this.state.error)
+        console.log('errors value: '+ this.state.markerDataError)
 
 
     }
     };
     */
-
 
    //Initialize and add the map
    initMap = () => {
@@ -155,7 +143,7 @@ class App extends Component {
             this.setState({allMarkers:allMarkers});
         
             //Define infowindow's content
-            let content = `<div><h2>${marker.title}</h2><p><strong>Address:</strong>${marker.store_address}</p></p></div>`; 
+            let content = `<div><h2>${marker.title}</h2><p><strong>Address:</strong>${marker.store_address}${this.state.markerDataError}</p></div>`; 
             
             //Open infowindow 
             marker.addListener('click',() => {

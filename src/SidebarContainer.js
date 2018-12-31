@@ -150,7 +150,6 @@ class SidebarContainer extends Component {
             }
         }
        */
-console.log('error in sidebar.js.:' + this.props.error)
         return (
             
             <aside tabIndex='0' className ="sidebarContainer" >
