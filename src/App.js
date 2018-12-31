@@ -20,19 +20,18 @@ class App extends Component {
       filteredLocals: '',
       venues: [],
       error: null,
-      selectedLokal: '',
-      clickedLocal: ''
-    };
-     
-    }
+      //selectedLokal: '',
+      //clickedLocal: '',    
+    }}
 
     componentDidMount = () => {
         //fetch(`https://api.foursquare.com/v2/venues/4b058890f964a520afcd22e3?client_id=FTPQMQKRBNIJJDPKNGWFMUHD3KBP1OIYX0YZ5BU250CILCD&client_secret=EZ3ACLWE1RBXRJSHLQCE0RU4DIYJTQB1SOEVVIK10OFKCR1F&v=20181108`)
         fetch(`https://api.foursquare.com/v2/venues/explore?ll=48.208418,16.373231&query=cafe&limit=10&client_id=FTPQMQKRBNIJJDPKNGWFMUHD3KBP1OIYX0YZ5BU250CILCD4&client_secret=EZ3ACLWE1RBXRJSHLQCE0RU4DIYJTQB1SOEVVIK10OFKCR1F&v=20181108`)
-            
+        //fetch(`'https://hn.algolia.com/api/v1`)
             .then(response => response.json())
             .then(data => {
                     this.setState({
+                        //Saving to state two copies of the fetched data(for the list and for the filtering function)
                         localsVenues: data.response.groups[0].items,
                         newLocals : data.response.groups[0].items
                     });
@@ -45,10 +44,10 @@ class App extends Component {
                     //console.log(' newLocals state értéke:'+  this.state.newLocals[3].venue.name);
                 })
             .catch(error => {
-                console.log("Error : " + error);
-                alert("An error occured while fetching data by Foursquare Api" + error);
+                this.setState({ error });
+                //console.log("Error : " + error);
+                //alert("An error occured while fetching data by Foursquare Api" + error);
         }) ;
-
     }
 
     
@@ -168,7 +167,7 @@ class App extends Component {
             }); 
     }
 
-     
+    
     
     //Add animation to marker selected by a listelement
     clickLocalFromList = (clickedLocal)=> {
@@ -197,58 +196,58 @@ class App extends Component {
         
     }
     
-//Filter locations through search form
-filterLocals = () =>{
-    console.log('allMarkers state: ' + this.state.allMarkers);
-   
-    //console.log('venues.venue.categories.id: '+ venues.venue.categories.id);
+    //Filter locations through search form
+    filterLocals = () =>{
+        console.log('allMarkers state: ' + this.state.allMarkers);
+    
+        //console.log('venues.venue.categories.id: '+ venues.venue.categories.id);
 
-    let userValue = document.getElementById('search_box').value;
+        let userValue = document.getElementById('search_box').value;
+        
+        let venues = this.state.newLocals.filter((searchVenue) =>   
+            //new RegExp(userValue, "i").exec(searchVenue.venue.name));
+            searchVenue.venue.name.toLowerCase().includes(userValue.toLowerCase()));
+        
+        this.setState({ localsVenues : venues});
     
-    let venues = this.state.newLocals.filter((searchVenue) =>   
-        //new RegExp(userValue, "i").exec(searchVenue.venue.name));
-        searchVenue.venue.name.toLowerCase().includes(userValue.toLowerCase()));
+        //console.log('allMarkers[0].store_id:'+this.state.allMarkers[0].store_id);
+        //console.log('venues[0].venue.id:'+venues[0].venue.id); 
     
-    this.setState({ localsVenues : venues});
-   
-    //console.log('allMarkers[0].store_id:'+this.state.allMarkers[0].store_id);
-    //console.log('venues[0].venue.id:'+venues[0].venue.id); 
-   
-   //Keep synchron the shown markers on map with the shown list
-    const currentMarkers = () => {
-        for (let i = 0; i < venues.length; i++) {
-        if (venues[i].venue.id != this.allMarkers.store_id){
-            this.marker.setVisible(false);   
-        }
-    }}     
-    
-    //this.setState({ allMarkers : venues});
-    this.setState({ allMarkers: currentMarkers})
-    console.log('allMarkers state: ' + this.state.allMarkers);
-    this.initMap()
-    ;
-    
-    /*//version2: doesn't work
-    this.state.allMarkers.forEach(function (marker){
-        (marker.title.toLowerCase() != venues.name.toLowerCase()) && marker.setMap(null)
-    });
-    */
-    /*//version3: doesn't work
-    //https://stackoverflow.com/questions/22157001/update-reload-markers-without-reloading-google-map
-    //https://stackoverflow.com/questions/51845400/updating-react-google-markers-through-search-filter
-    let selectedMarkers = this.state.allMarkers.filter((someMarker) => {
-        someMarker.venue.name.toLowerCase().includes(userValue.toLowerCase());
-
-        this.setState({selectedMarkers: selectedMarkers});
-
-        this.state.selectedMarkers.forEach(selectedMarker => {
-            selectedMarker.setMap(null);
-       
+    //Keep synchron the shown markers on map with the shown list
+        /*const currentMarkers = () => {
+            for (let i = 0; i < venues.length; i++) {
+            if (venues[i].venue.id !== this.allMarkers.store_id){
+                this.marker.setVisible(false);   
+            }
+        }}     
+        */
+        //this.setState({ allMarkers : venues});
+        //this.setState({ allMarkers: currentMarkers});
+        console.log('allMarkers state: ' + this.state.allMarkers);
+        this.initMap()
+        ;
+        
+        /*//version2: doesn't work
+        this.state.allMarkers.forEach(function (marker){
+            (marker.title.toLowerCase() != venues.name.toLowerCase()) && marker.setMap(null)
         });
-      
-    });
-    */
-}
+        */
+        /*//version3: doesn't work
+        //https://stackoverflow.com/questions/22157001/update-reload-markers-without-reloading-google-map
+        //https://stackoverflow.com/questions/51845400/updating-react-google-markers-through-search-filter
+        let selectedMarkers = this.state.allMarkers.filter((someMarker) => {
+            someMarker.venue.name.toLowerCase().includes(userValue.toLowerCase());
+
+            this.setState({selectedMarkers: selectedMarkers});
+
+            this.state.selectedMarkers.forEach(selectedMarker => {
+                selectedMarker.setMap(null);
+        
+            });
+        
+        });
+        */
+    }
 
 
     render() {
@@ -264,7 +263,8 @@ filterLocals = () =>{
                                 error ={this.state.error}
                                 filterLocals = {this.filterLocals}
                                 venues = {this.state.localsVenues}
-                                newLocals= {this.state.newLocals}
+                                newLocals = {this.state.newLocals}
+                                toggleList =  {this.toggleList}
                                 />
             <div id='map' role='application'></div>
         </div>

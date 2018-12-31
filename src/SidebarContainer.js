@@ -13,7 +13,8 @@ class SidebarContainer extends Component {
                 query: '',
                 listOfLokalElements: '',
                 newLocals:'',
-                filteredLocals:''
+                filteredLocals:'',
+                showingFullList : true
                //ElementColorDefault : true
                 //shownMarkers: [],
                 //singleMarker: []
@@ -41,7 +42,7 @@ class SidebarContainer extends Component {
         console.log('after ComponentWillMount the value of newLocals in state:' + this.state.newLocals)
         
     }
-     
+    
   /*/BUG
   filterLocals  = () => {
         //let listOfLokalElements =[];
@@ -104,26 +105,12 @@ class SidebarContainer extends Component {
        
    }
      */ 
-
+    toggleList = () => {
+        this.setState({ showingFullList : !this.state.showingFullList});
+        this.setState({venue : this.props.newLocals});
+    }; 
    
     render() {
-       
-        console.log('this.state.filteredLocals: ' + this.state.filteredLocals.venue);
-
-        /*/console.log('Props', this.props)
-        let showingListOfLocals;
-        if (this.state.query) {
-            const match = new RegExp(escapeRegExp(this.state.query), 'i');
-            console.log('value of current query: ' + this.state.query)
-            showingListOfLocals = this.state.newLocals.filter((local) => 
-                match.test(local.name));               
-            } else {
-                showingListOfLocals = locals;
-            };
-        //Passing showingListOfLocals array to App.js
-       */
-        //let li_class = this.state.ElementColorDefault ? ".Sidebar-list li" : ".Sidebar-list li_selected";
-       
 
         /*/https://developers.google.com/maps/documentation/javascript/examples/marker-remove         
          let filterMarkers = (query) => {
@@ -163,7 +150,7 @@ class SidebarContainer extends Component {
             }
         }
        */
-
+console.log('error in sidebar.js.:' + this.props.error)
         return (
             
             <aside tabIndex='0' className ="sidebarContainer" >
@@ -176,15 +163,20 @@ class SidebarContainer extends Component {
                         placeholder="Search for a café by name..."
                         aria-labelledby="filter cafés by name"
                     />
+                    
                     <button
                         className="list-button"
+                        onClick= {() =>this.toggleList()}
                     >
-                    List
+                    Suggestion List
                     </button>
+                    {this.props.error && 
+                        <div className="error"><span aria-labelledby="error message"><strong>An error occured:</strong>{this.props.error}</span></div>}
                 </form>     
-                    {(               
+                    {(           
                         <ul className ="sidebar-list">
-                            {this.props.venues.map((singleLocal) => (
+                            {this.state.showingFullList &&
+                            this.props.venues.map((singleLocal) => (
                                 <li
                                 key={singleLocal.venue.id}
                                 className= "li"
@@ -196,7 +188,7 @@ class SidebarContainer extends Component {
                                 <p><span aria-labelledby="GPS coordinates">GPS coordinates:</span></p> 
                                 <p><span aria-labelledby="lat">lat:{singleLocal.venue.location.labeledLatLngs[0].lat}</span>, <span aria-labelledby="lng">lng:{singleLocal.venue.location.labeledLatLngs[0].lng}</span></p>
                                 <p />
-                                {this.props.error}
+                                
                                 </li>
                                 ))}
                             </ul>
