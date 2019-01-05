@@ -161,30 +161,8 @@ class App extends Component {
         */
         //this.setState({ allMarkers : venues});
         //this.setState({ allMarkers: currentMarkers});
-        console.log('allMarkers state: ' + this.state.allMarkers);
-        this.initMap()
-        ;
-        
-        /*//version2: doesn't work
-        this.state.allMarkers.forEach(function (marker){
-            (marker.title.toLowerCase() != venues.name.toLowerCase()) && marker.setMap(null)
-        });
-        */
-        /*//version3: doesn't work
-        //https://stackoverflow.com/questions/22157001/update-reload-markers-without-reloading-google-map
-        //https://stackoverflow.com/questions/51845400/updating-react-google-markers-through-search-filter
-        let selectedMarkers = this.state.allMarkers.filter((someMarker) => {
-            someMarker.venue.name.toLowerCase().includes(userValue.toLowerCase());
-
-            this.setState({selectedMarkers: selectedMarkers});
-
-            this.state.selectedMarkers.forEach(selectedMarker => {
-                selectedMarker.setMap(null);
-        
-            });
-        
-        });
-        */
+        //console.log('allMarkers state: ' + this.state.allMarkers);
+        this.initMap();
     }
 
 
