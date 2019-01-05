@@ -9,6 +9,7 @@
 * Run the Project
 * Online Demo
 * Features
+* Useful links
 
 ## Project
 
@@ -71,3 +72,10 @@ Interact directly on GithubPages - in progress
  2.  You can select a café from the list by direct clicking and the marker of the café on the map will be animated.
  3.  For further information, please open the markers' infowindow.(You can close the infowindow by clicking the close icon.)
  4.  The other way to select a café is to type the name in the search bar.
+
+ ## Useful Links
+
+ + ["How to fetch data in React" blogpost by Robin Wieruch](https://www.robinwieruch.de/react-fetching-data/)
+ + ["Road to React" - E-book] A concise and very good explained introduction to React also by Robin Wieruch] (https://roadtoreact.com/)
+ + ["REACT LIFECYCLE EVENTS" blogpost by Flavio Copes](https://flaviocopes.com/react-lifecycle-events/)
+ + ["Making a Progressive Web App"](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
