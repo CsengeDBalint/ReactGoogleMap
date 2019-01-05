@@ -1,17 +1,14 @@
 .sidebarContainer {
-    padding: 1em 1em;
-     box-shadow: 1px 1px 2px 1px #445f5c;
-    color: #445f5c;
+    
     background-color: #ffffff;
     width: 280px;
     max-width:100%;
     position: absolute;
     z-index: 1;
-    overflow: scroll;
     display:flex;
     flex-direction: column;
     font-family: Arial, Helvetica, sans-serif;
-    overflow: hidden;
+     overflow: scroll;
 
  }
 
@@ -24,9 +21,10 @@
 .sidebar-list li{
      display: relative;
      height: auto;
-     padding: 1em;
+     padding: 0.2em;
      box-shadow: 1px 1px 2px 1px #445f5c;
      background-color: white;
+     
    }
 .sidebar-list li:hover {
     background-color: #78eee0;
