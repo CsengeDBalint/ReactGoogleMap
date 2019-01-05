@@ -1,44 +1,73 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# NeighborhoodMap
+[Udacity Front End Webdeveloper Nanodegree Program](https://eu.udacity.com/course/front-end-web-developer-nanodegree--nd001) Project 8
 
-## Available Scripts
+## Table of Contents
+  
+* Project
+* Dependencies
+* File Structure
+* Run the Project
+* Online Demo
+* Features
 
-In the project directory, you can run:
+## Project
 
-### `npm start`
+A single-page web application displaying a few classical cafés in the historic center of Vienna (Austria). The app is built with the React framework, Google Map Api and Foursquare Api.
+Users can search by name from a list or on the map from the provided cafés.
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+## Dependencies 
 
-### `npm test`
+ The project uses:
+	[npm](https://www.npmjs.com/)
+    [React](https://reactjs.org/)
+    [Create React App](https://github.com/facebook/create-react-app)
+    [Google Maps API](https://developers.google.com/maps/documentation/)
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## File Structure
+```sh
+reactgooglemap
+  node_modules/...
+  public/
+    favicon.ico
+    index.html
+    manifest.json
+  src
+    components/
+      Footer.js
+      Header.js
+      logo.svg
+      SidebarContainer.css
+      SidebarContainer.js
+    App.css
+    App.js
+    App.test.js
+    index.css
+    index.js
+    serviceWorker.js
+    
+  .gitignore
+  package.json
+  package-lock.json
+  README.md
+  
+```
+  
 
-### `npm run build`
+## Run the Project
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+ 1.  Clone or download this repository
+ 2.  `cd reactgooglemap` folder
+ 3.  Install all dependencies with `npm install` (in the root of this repository of your terminal)
+ 4.  Start the server with  `npm start`
+ 5.  Navigate to **localhost:3000** in your favorite browser
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+## Online Demo
+Interact directly on GithubPages - in progress
+[GithubPages] (https://github.com/CsengeDBalint/github.io/neighborhood_map)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Features
+ 1.  The app starts with the first ten cafés in the altstadt of Vienna, which will be fetched by the [FourSquare Api] (https://foursquare.com/developers/explore).
+ 2.  You can select a café from the list by direct clicking and the marker of the café on the map will be animated.
+ 3.  For further information, please open the markers' infowindow.(You can close the infowindow by clicking the close icon.)
+ 4.  The other way to select a café is to type the name in the search bar.
