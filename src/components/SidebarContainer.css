@@ -1,7 +1,4 @@
 .sidebarContainer {
-
-    box-shadow: 1px 1px 2px 1px rgba(128, 128, 128, 0.2);
-    padding: 1em 1em;
     color: #444444;
     background-color: #ffffff;
     width: 280px;
@@ -12,8 +9,6 @@
     display:flex;
     flex-direction: column;
     font-family: Arial, Helvetica, sans-serif;
-    overflow: hidden;
-
  }
 
 .sidebar-list {
@@ -25,7 +20,7 @@
 .sidebar-list li{
      display: relative;
      height: auto;
-     padding: 1em;
+     padding: 0.3em;
      box-shadow: 1px 1px 2px 1px rgba(128, 128, 128, 0.2);
      background-color: white;
    }
